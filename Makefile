@@ -29,9 +29,15 @@ smoke:
 	$(PYTHON) -m mortgage_threat_intel.cli smoke --config configs/base.yaml --with-models
 
 baseline:
-	$(PYTHON) -m mortgage_threat_intel.cli baseline --config configs/base.yaml --synthetic
+	$(PYTHON) -m mortgage_threat_intel.cli baseline --config configs/base.yaml --no-synthetic
 
 privacy:
+	$(PYTHON) -m mortgage_threat_intel.cli privacy --config configs/base.yaml --privacy-config configs/privacy.yaml --no-synthetic
+
+baseline-synthetic:
+	$(PYTHON) -m mortgage_threat_intel.cli baseline --config configs/base.yaml --synthetic
+
+privacy-synthetic:
 	$(PYTHON) -m mortgage_threat_intel.cli privacy --config configs/base.yaml --privacy-config configs/privacy.yaml --synthetic
 
 fairness:

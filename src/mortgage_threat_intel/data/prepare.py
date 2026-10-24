@@ -14,15 +14,17 @@ from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from mortgage_threat_intel.config import BaseConfig
 from mortgage_threat_intel.data.contracts import assert_no_forbidden_in_features
 
+# Snapshot LAR: CLTV is mostly continuous ratios (plus "Exempt"); one-hot would
+# explode (~50k levels). DTI is a small set of bucket/code strings — keep categorical.
 NUMERIC_CANDIDATES = (
     "loan_amount",
     "income",
-    "debt_to_income_ratio",
-    "loan_to_value_ratio",
     "property_value",
+    "combined_loan_to_value_ratio",
 )
 
 CATEGORICAL_CANDIDATES = (
+    "debt_to_income_ratio",
     "loan_type",
     "loan_purpose",
     "occupancy_type",
@@ -37,9 +39,11 @@ class FittedPreprocessor:
     transformer: ColumnTransformer
     numeric_features: list[str]
     categorical_features: list[str]
+    config: BaseConfig
 
     def transform(self, df: pd.DataFrame) -> np.ndarray:
-        return self.transformer.transform(df[self.feature_names])
+        frame = build_model_frame(df, self.config)
+        return self.transformer.transform(frame[self.feature_names])
 
 
 def _coerce_numeric(series: pd.Series) -> pd.Series:
@@ -61,6 +65,9 @@ def build_model_frame(df: pd.DataFrame, config: BaseConfig) -> pd.DataFrame:
     for col in allow:
         if col in NUMERIC_CANDIDATES:
             out[col] = _coerce_numeric(out[col])
+        elif col in CATEGORICAL_CANDIDATES:
+            # HMDA mixes numeric codes and strings (e.g. DTI buckets); unify as str.
+            out[col] = out[col].map(lambda v: "NA" if pd.isna(v) else str(v))
     return out
 
 
@@ -110,4 +117,5 @@ def fit_preprocessor(train_df: pd.DataFrame, config: BaseConfig) -> FittedPrepro
         transformer=ct,
         numeric_features=numeric,
         categorical_features=categorical,
+        config=config,
     )

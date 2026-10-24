@@ -15,7 +15,7 @@ from mortgage_threat_intel.config import (
     load_base_config,
     load_privacy_config,
 )
-from mortgage_threat_intel.data.pipeline import prepare_synthetic
+from mortgage_threat_intel.data.pipeline import prepare_hmda, prepare_synthetic
 from mortgage_threat_intel.evaluation.artifacts import new_run_manifest, write_json
 from mortgage_threat_intel.evaluation.metrics import utility_metrics
 from mortgage_threat_intel.models.dp_mlp import train_matched_mlp_pair
@@ -35,10 +35,7 @@ def run_privacy(
     privacy = privacy_config or load_privacy_config(default_config_dir() / "privacy.yaml")
     seed_everything(base.seed)
 
-    if not use_synthetic:
-        raise NotImplementedError("Full HMDA privacy runs require explicit local data path")
-
-    prepared = prepare_synthetic(base)
+    prepared = prepare_synthetic(base) if use_synthetic else prepare_hmda(base)
     # Transform non-members with the member-fitted preprocessor
     X_non = prepared.preprocessor.transform(prepared.mia.non_members)
 
@@ -92,7 +89,7 @@ def run_privacy(
         seed=base.seed,
         device=privacy.dp_sgd.device,
         extra={
-            "synthetic": True,
+            "synthetic": use_synthetic,
             "n_train": int(len(prepared.y_members)),
             "delta_rule": privacy.dp_sgd.delta_rule,
             "target_epsilon_requested": privacy.dp_sgd.target_epsilon,

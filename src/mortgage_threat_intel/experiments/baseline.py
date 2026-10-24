@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from mortgage_threat_intel.config import BaseConfig, default_config_dir, load_base_config
-from mortgage_threat_intel.data.pipeline import prepare_synthetic
+from mortgage_threat_intel.data.pipeline import prepare_hmda, prepare_synthetic
 from mortgage_threat_intel.data.splits import assert_no_test_year_in_fit
 from mortgage_threat_intel.evaluation.artifacts import new_run_manifest, write_json
 from mortgage_threat_intel.evaluation.metrics import utility_metrics
@@ -23,13 +23,7 @@ def run_baselines(
 ) -> dict[str, Any]:
     config = config or load_base_config(default_config_dir() / "base.yaml")
     seed_everything(config.seed)
-    if not use_synthetic:
-        raise NotImplementedError(
-            "Full HMDA baseline runs require local files and an explicit non-synthetic path; "
-            "use synthetic for smoke / CI."
-        )
-
-    prepared = prepare_synthetic(config)
+    prepared = prepare_synthetic(config) if use_synthetic else prepare_hmda(config)
     assert_no_test_year_in_fit(
         [prepared.split.train, prepared.split.validation],
         test_year=config.years.test,
@@ -63,7 +57,7 @@ def run_baselines(
             "feature_allowlist": list(config.features.allowlist),
             "audit_model": config.models.audit_model,
             "used_2025": False,
-            "synthetic": True,
+            "synthetic": use_synthetic,
         },
     )
     payload = {

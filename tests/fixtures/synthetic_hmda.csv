@@ -1,4 +1,4 @@
-row_id,activity_year,action_taken,loan_amount,income,debt_to_income_ratio,loan_to_value_ratio,property_value,loan_type,loan_purpose,occupancy_type,lien_status,state_code,applicant_race_1,applicant_ethnicity_1,applicant_sex,applicant_age,denial_reason_1
+row_id,activity_year,action_taken,loan_amount,income,debt_to_income_ratio,combined_loan_to_value_ratio,property_value,loan_type,loan_purpose,occupancy_type,lien_status,state_code,applicant_race_1,applicant_ethnicity_1,applicant_sex,applicant_age,denial_reason_1
 r1,2023,1,100000,40000,20,60,150000,1,31,1,1,06,1,1,1,25,
 r2,2023,2,101379,40911,23,62,152200,2,1,1,1,48,2,2,2,26,
 r3,2023,3,102758,41822,26,64,154400,3,1,1,1,36,3,1,1,27,1
