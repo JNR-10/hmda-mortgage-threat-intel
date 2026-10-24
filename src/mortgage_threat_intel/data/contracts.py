@@ -10,7 +10,7 @@ REQUIRED_CORE_COLUMNS: tuple[str, ...] = (
     "loan_amount",
     "income",
     "debt_to_income_ratio",
-    "loan_to_value_ratio",
+    "combined_loan_to_value_ratio",
     "property_value",
     "loan_type",
     "loan_purpose",

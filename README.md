@@ -78,7 +78,11 @@ make lint          # ruff check + format check (no HMDA data)
 make test          # pytest on synthetic fixtures (no HMDA data)
 make smoke         # synthetic CLI smoke run (no HMDA data)
 make data-check    # reports missing local HMDA files / expected placement
-make all           # synthetic smoke path only on main scaffold
+make profile       # aggregate 2023/2024 profile (2025 sealed; needs local LAR)
+make baseline      # real HMDA LR + HGB (needs local LAR; uses processed cache)
+make privacy       # real HMDA DP-SGD + MIA (needs local LAR)
+make handoff-sync  # copy aggregate JSON into reports/handoff/ (commit-safe)
+make all           # synthetic smoke path
 ```
 
 CLI:
@@ -91,13 +95,23 @@ python -m mortgage_threat_intel.cli data-check --config configs/base.yaml
 
 ## Local HMDA data (never commit)
 
-Place annual files under `data/raw/` (or set `HMDA_DATA_DIR`):
+Place annual Snapshot LAR files under `data/raw/` (or set `HMDA_DATA_DIR`):
 
-- `data/raw/hmda_2023.csv`
-- `data/raw/hmda_2024.csv`
-- `data/raw/hmda_2025.csv` (presence/schema/hash only until protocol freeze)
+- `data/raw/hmda_2023.csv.gz`
+- `data/raw/hmda_2024.csv.gz`
+- `data/raw/hmda_2025.csv.gz` (presence/schema/hash only until protocol freeze)
 
-See `data/README.md`. Raw/processed rows, checkpoints, and row-level predictions stay git-ignored under `data/` and `outputs/`.
+**Download URLs, curl/gzip recipe, and SHA-256 provenance:** `data/README.md` and `data/download_manifest.json`.
+
+Raw/processed rows, model bundles, and row-level predictions stay git-ignored under `data/` and `outputs/`. After the first successful sample, a capped cache appears at `data/processed/dev_sample_*.csv.gz` so later runs skip re-scanning the national files.
+
+## For Krati (K-01+)
+
+Primary handoff: **`docs/handoff/J-07-jainil-to-krati.md`**.
+
+Committed aggregate snapshots (no loan rows): **`reports/handoff/`** — baseline metrics, privacy/MIA/DP metadata, and data profile. Use these for K-01 and report tables; do not re-run privacy unless the privacy config changes.
+
+For fairness / TreeSHAP / robustness: download LAR once → `make data-check` → `make baseline` (writes local `outputs/baselines/latest_audit_bundle.joblib`). Keep 2025 sealed until the joint test protocol is frozen. Complete **T-01 joint sign-off** with Jainil before treating configs as frozen for reporting.
 
 ## Repository layout
 

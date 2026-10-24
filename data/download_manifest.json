@@ -1,0 +1,108 @@
+{
+  "created_utc": "2026-10-24T16:53:23.448337+00:00",
+  "official_portal": "https://ffiec.cfpb.gov/data-publication/snapshot-national-loan-level-dataset",
+  "file_server": "https://files.ffiec.cfpb.gov",
+  "selection_rationale": "Plan requires HMDA years 2023 (fit), 2024 (tune), 2025 (sealed test). Used official Snapshot National Loan Level public LAR CSV zips only.",
+  "local_layout": {
+    "raw_lar": "data/raw/hmda_YYYY.csv.gz",
+    "docs": "data/raw/docs/",
+    "gitignored": true
+  },
+  "years": [
+    {
+      "local_path": "data/raw/hmda_2023.csv.gz",
+      "source_zip_url": "https://files.ffiec.cfpb.gov/static-data/snapshot/2023/2023_public_lar_csv.zip",
+      "publication_page": "https://ffiec.cfpb.gov/data-publication/snapshot-national-loan-level-dataset/2023",
+      "dataset": "CFPB/FFIEC Snapshot National Loan Level Dataset \u2014 Public LAR CSV",
+      "freeze_date": "May 1, 2024",
+      "source_zip_bytes": 624535331,
+      "source_zip_last_modified": "Fri, 21 Nov 2025 18:27:50 GMT",
+      "zip_member": "2023_public_lar_csv.csv",
+      "download_completed_utc": "2026-10-23T23:31:00Z",
+      "year": 2023,
+      "filename": "hmda_2023.csv.gz",
+      "bytes": 624535085,
+      "sha256": "d1aad0c1a3af6da333c440cab03aaed699084430e9a84f297823c4d3239c90df",
+      "format": "gzip-compressed CSV derived from official Snapshot LAR zip",
+      "header_check": {
+        "n_columns": 99,
+        "missing_core_columns": [],
+        "has_action_taken": true
+      }
+    },
+    {
+      "local_path": "data/raw/hmda_2024.csv.gz",
+      "source_zip_url": "https://files.ffiec.cfpb.gov/static-data/snapshot/2024/2024_public_lar_csv.zip",
+      "publication_page": "https://ffiec.cfpb.gov/data-publication/snapshot-national-loan-level-dataset/2024",
+      "dataset": "CFPB/FFIEC Snapshot National Loan Level Dataset \u2014 Public LAR CSV",
+      "freeze_date": "May 19, 2025",
+      "source_zip_bytes": 664242987,
+      "source_zip_last_modified": "Fri, 21 Nov 2025 18:27:51 GMT",
+      "zip_member": "2024_public_lar_csv.csv",
+      "download_completed_utc": "2026-10-23T23:41:00Z",
+      "year": 2024,
+      "filename": "hmda_2024.csv.gz",
+      "bytes": 664242765,
+      "sha256": "89b9299a87e400ffaee398e65e76cbe9744607e3033840e7a732a8a63f9b92a5",
+      "format": "gzip-compressed CSV derived from official Snapshot LAR zip",
+      "header_check": {
+        "n_columns": 99,
+        "missing_core_columns": [],
+        "has_action_taken": true
+      }
+    },
+    {
+      "local_path": "data/raw/hmda_2025.csv.gz",
+      "source_zip_url": "https://files.ffiec.cfpb.gov/static-data/snapshot/2025/2025_public_lar_csv.zip",
+      "publication_page": "https://ffiec.cfpb.gov/data-publication/snapshot-national-loan-level-dataset/2025",
+      "dataset": "CFPB/FFIEC Snapshot National Loan Level Dataset \u2014 Public LAR CSV",
+      "freeze_date": "June 2, 2026",
+      "source_zip_bytes": 737139477,
+      "source_zip_last_modified": "Tue, 23 Jun 2026 13:29:33 GMT",
+      "zip_member": "2025_public_lar_csv.csv",
+      "download_completed_utc": "2026-10-24T15:37:00Z",
+      "outcomes_sealed": true,
+      "year": 2025,
+      "filename": "hmda_2025.csv.gz",
+      "bytes": 737139255,
+      "sha256": "c1ba452f17e7b937b1573b58274eaaddfc1739bfe1e9f540e225285d8b7aff6a",
+      "format": "gzip-compressed CSV derived from official Snapshot LAR zip",
+      "header_check": {
+        "n_columns": 99,
+        "missing_core_columns": [],
+        "has_action_taken": true
+      }
+    }
+  ],
+  "documentation": [
+    {
+      "local_path": "data/raw/docs/lar-data-fields.html",
+      "source_url": "https://ffiec.cfpb.gov/documentation/publications/loan-level-datasets/lar-data-fields",
+      "description": "Public HMDA Data Fields with Values and Definitions",
+      "filename": "lar-data-fields.html",
+      "bytes": 115155,
+      "sha256": "a76febeb7de8df12f435b1e5f83a05ee233382f55508dcfa2b19ac7fc5584c57"
+    },
+    {
+      "local_path": "data/raw/docs/public-lar-schema.html",
+      "source_url": "https://ffiec.cfpb.gov/documentation/publications/loan-level-datasets/public-lar-schema",
+      "description": "Public LAR Schema",
+      "filename": "public-lar-schema.html",
+      "bytes": 36809,
+      "sha256": "9f330add84f2bf07350ee8ea0482167467b5c7799d4cf7c9eac51f67379886ae"
+    },
+    {
+      "local_path": "data/raw/docs/static-dataset-faq.html",
+      "source_url": "https://ffiec.cfpb.gov/documentation/faq/static-dataset-faq",
+      "description": "Static Dataset FAQ",
+      "filename": "static-dataset-faq.html",
+      "bytes": 37810,
+      "sha256": "7856561115eddc1eea53b54d6106ba2a7de698cdb2364bac74772e2d78292044"
+    }
+  ],
+  "notes": [
+    "Original zip archives were deleted after streaming conversion to .csv.gz to save disk.",
+    "source_zip_bytes and source_zip_last_modified come from HTTP HEAD of the official zip.",
+    "Do not commit loan-level files. 2025 outcomes remain sealed until protocol freeze."
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "aggregate_only": true,
+  "manifest": {
+    "aggregate_only": true,
+    "audit_model": "hist_gradient_boosting",
+    "command": "baseline",
+    "config_paths": [
+      "configs/base.yaml"
+    ],
+    "device": "cpu",
+    "feature_allowlist": [
+      "loan_amount",
+      "income",
+      "debt_to_income_ratio",
+      "combined_loan_to_value_ratio",
+      "property_value",
+      "loan_type",
+      "loan_purpose",
+      "occupancy_type",
+      "lien_status",
+      "state_code"
+    ],
+    "n_mia_non_members": 20000,
+    "n_train_members": 80000,
+    "n_validation": 100000,
+    "row_level_outputs": false,
+    "run_id": "88915b24-aafb-4cf8-83d6-e1ef433c6f25",
+    "seed": 42,
+    "synthetic": false,
+    "timestamp_utc": "2026-10-24T19:09:20.401508+00:00",
+    "used_2025": false
+  },
+  "metrics": {
+    "hist_gradient_boosting": {
+      "auprc": 0.9342203123823818,
+      "auroc": 0.8533670294017728,
+      "balanced_accuracy": 0.7278418239010043,
+      "brier_score": 0.11591693771907545
+    },
+    "logistic_regression": {
+      "auprc": 0.9023846806752885,
+      "auroc": 0.7954563693956369,
+      "balanced_accuracy": 0.6792314881563253,
+      "brier_score": 0.13198471038545723
+    }
+  },
+  "row_level_outputs": false
+}

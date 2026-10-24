@@ -20,8 +20,9 @@ dependencies = [
   "scipy>=1.11,<2",
   "PyYAML>=6.0,<7",
   "pydantic>=2.5,<3",
-  "torch>=2.2,<3",
-  "opacus>=1.4,<2",
+  # macOS x86_64 PyPI currently tops out at torch 2.2.x; Opacus>=1.5 needs nn.RMSNorm (torch>=2.4).
+  "torch>=2.2,<2.3",
+  "opacus>=1.4,<1.5",
 ]
 
 [project.optional-dependencies]
