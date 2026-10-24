@@ -6,6 +6,8 @@ import uuid
 from pathlib import Path
 from typing import Any
 
+import joblib
+
 from mortgage_threat_intel.config import BaseConfig, default_config_dir, load_base_config
 from mortgage_threat_intel.data.pipeline import prepare_hmda, prepare_synthetic
 from mortgage_threat_intel.data.splits import assert_no_test_year_in_fit
@@ -68,6 +70,21 @@ def run_baselines(
     }
 
     out = output_dir or Path(config.paths.outputs) / "baselines"
+    out.mkdir(parents=True, exist_ok=True)
     write_json(out / f"{run_id}_metrics.json", payload)
     write_json(out / "latest_metrics.json", payload)
+
+    # Local-only audit artifacts for Krati (gitignored under outputs/). Not row-level.
+    joblib.dump(
+        {
+            "run_id": run_id,
+            "seed": config.seed,
+            "synthetic": use_synthetic,
+            "feature_names": list(prepared.feature_names),
+            "preprocessor": prepared.preprocessor,
+            "logistic": lr,
+            "hist_gradient_boosting": hgb,
+        },
+        out / "latest_audit_bundle.joblib",
+    )
     return payload

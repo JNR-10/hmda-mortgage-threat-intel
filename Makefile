@@ -4,7 +4,7 @@
 PYTHON ?= .venv/bin/python
 PIP ?= .venv/bin/pip
 
-.PHONY: setup lint test data-check smoke baseline privacy fairness xai robustness all profile
+.PHONY: setup lint test data-check smoke baseline privacy fairness xai robustness all profile handoff-sync
 
 setup:
 	python3.11 -m venv .venv
@@ -40,16 +40,19 @@ baseline-synthetic:
 privacy-synthetic:
 	$(PYTHON) -m mortgage_threat_intel.cli privacy --config configs/base.yaml --privacy-config configs/privacy.yaml --synthetic
 
+handoff-sync:
+	$(PYTHON) scripts/sync_handoff_aggregates.py
+
 fairness:
-	@echo "fairness: reserved for Krati (K-02/K-03); not started in Jainil phase"
+	@echo "fairness: reserved for Krati (K-02/K-03); see docs/handoff/J-07-jainil-to-krati.md"
 	@exit 1
 
 xai:
-	@echo "xai: reserved for Krati (K-04); not started in Jainil phase"
+	@echo "xai: reserved for Krati (K-04); see docs/handoff/J-07-jainil-to-krati.md"
 	@exit 1
 
 robustness:
-	@echo "robustness: reserved for Krati (K-05); not started in Jainil phase"
+	@echo "robustness: reserved for Krati (K-05); see docs/handoff/J-07-jainil-to-krati.md"
 	@exit 1
 
 all: smoke

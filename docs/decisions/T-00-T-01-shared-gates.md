@@ -4,7 +4,7 @@
 **Authors:** Jainil Rana, Krati Jain (provisional; joint sign-off pending)  
 **Sources:** `revised_mortgage_ai_threat_intelligence_implementation_plan.md`, `AGENTS.md` only  
 **Status:** Working decisions for implementation. Course-rubric acceptance of the HMDA proxy is **unverified**.  
-**Update (2026-10-24):** Real Snapshot LAR downloaded; J-02 aggregate profile written to `outputs/data_profile.json`. Feature allowlist LTV field corrected to `combined_loan_to_value_ratio`. Real-data baseline + privacy completed on capped 2023/2024 samples with 2025 sealed (`outputs/baselines/latest_metrics.json`, `outputs/privacy/latest_privacy.json`). CLTV treated as numeric (high-cardinality); DTI remains categorical buckets. Development sample cached under gitignored `data/processed/`. **Joint T-01 sign-off with Krati still required** before treating the contract as frozen for reporting. **T-00 course-rubric check still unverified** (rubric not in repo).
+**Update (2026-10-24):** Real Snapshot LAR downloaded; J-02 aggregate profile written. Feature allowlist LTV field corrected to `combined_loan_to_value_ratio`. Real-data baseline + privacy completed on capped 2023/2024 samples with 2025 sealed. Aggregate snapshots for Krati are committed under `reports/handoff/` (see `docs/handoff/J-07-jainil-to-krati.md`). CLTV treated as numeric (high-cardinality); DTI remains categorical buckets. Development sample cached under gitignored `data/processed/`. **Joint T-01 sign-off with Krati still required** before treating the contract as frozen for reporting. **T-00 course-rubric check still unverified** (rubric not in repo).
 
 ---
 

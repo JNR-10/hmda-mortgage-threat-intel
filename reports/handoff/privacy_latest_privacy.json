@@ -1,0 +1,82 @@
+{
+  "aggregate_only": true,
+  "dp_privacy_metadata": {
+    "accountant_name": "PRVAccountant",
+    "achieved_epsilon": 3.9943399240833393,
+    "adjacency": "record_level",
+    "delta": 1.25e-05,
+    "device": "cpu",
+    "max_grad_norm": 1.0,
+    "n_train": 80000,
+    "noise_multiplier": 0.60211181640625,
+    "note": "achieved_epsilon is from the accountant at the stated delta; do not report target_epsilon as the privacy guarantee",
+    "sample_rate": 0.0064,
+    "steps": 471,
+    "target_epsilon": 4.0
+  },
+  "manifest": {
+    "achieved_delta": 1.25e-05,
+    "achieved_epsilon": 3.9943399240833393,
+    "aggregate_only": true,
+    "command": "privacy",
+    "config_paths": [
+      "configs/base.yaml",
+      "configs/privacy.yaml"
+    ],
+    "delta_rule": "one_over_n",
+    "device": "cpu",
+    "mia_evaluation_prior": "balanced_1_to_1",
+    "n_train": 80000,
+    "row_level_outputs": false,
+    "run_id": "8da6a76a-8e99-43a6-84aa-d29449f4e0cf",
+    "seed": 42,
+    "synthetic": false,
+    "target_epsilon_requested": 4.0,
+    "timestamp_utc": "2026-10-24T18:54:01.141428+00:00",
+    "used_2025_as_nonmember": false
+  },
+  "mia": {
+    "mlp_dp_sgd": {
+      "advantage": 0.005800000000000027,
+      "attack": "confidence_score",
+      "auc": 0.50012614125,
+      "auc_ci_high": 0.5047022517117639,
+      "auc_ci_low": 0.49461195419695386,
+      "evaluation_prior": "balanced_1_to_1",
+      "member_nonmember_disjoint": true,
+      "n_members_eval": 20000,
+      "n_non_members_eval": 20000,
+      "notes": "Balanced 1:1 evaluation prior is an analysis assumption, not an estimate of real-world attacker prevalence.",
+      "precision_at_balanced": 0.5022870662460568
+    },
+    "mlp_nonprivate": {
+      "advantage": 0.0049000000000000155,
+      "attack": "confidence_score",
+      "auc": 0.4993088275,
+      "auc_ci_high": 0.5045401529756749,
+      "auc_ci_low": 0.49375583934847533,
+      "evaluation_prior": "balanced_1_to_1",
+      "member_nonmember_disjoint": true,
+      "n_members_eval": 20000,
+      "n_non_members_eval": 20000,
+      "notes": "Balanced 1:1 evaluation prior is an analysis assumption, not an estimate of real-world attacker prevalence.",
+      "precision_at_balanced": 0.5041350210970464
+    }
+  },
+  "prevalence_train": 0.7508125,
+  "row_level_outputs": false,
+  "utility": {
+    "mlp_dp_sgd": {
+      "auprc": 0.9075373334272994,
+      "auroc": 0.806909137831181,
+      "balanced_accuracy": 0.6912308073990883,
+      "brier_score": 0.1541310533667603
+    },
+    "mlp_nonprivate": {
+      "auprc": 0.9240386292119266,
+      "auroc": 0.8343294776484003,
+      "balanced_accuracy": 0.7082180885201167,
+      "brier_score": 0.12117381668318321
+    }
+  }
+}
