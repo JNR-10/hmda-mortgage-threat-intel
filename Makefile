@@ -3,15 +3,14 @@
 
 PYTHON ?= .venv/bin/python
 PIP ?= .venv/bin/pip
-PACKAGE := mortgage-threat-intel
 
-.PHONY: setup lint test data-check smoke baseline privacy fairness xai robustness all
+.PHONY: setup lint test data-check smoke baseline privacy fairness xai robustness all profile
 
 setup:
 	python3.11 -m venv .venv
 	$(PIP) install --upgrade pip
 	$(PIP) install -e ".[dev]"
-	$(PIP) freeze > requirements.lock
+	$(PIP) freeze | grep -v '^-e ' | grep -v '^##' > requirements.lock
 
 lint:
 	$(PYTHON) -m ruff check src tests
@@ -23,17 +22,17 @@ test:
 data-check:
 	$(PYTHON) -m mortgage_threat_intel.cli data-check --config configs/base.yaml
 
-smoke:
-	$(PYTHON) -m mortgage_threat_intel.cli smoke --config configs/base.yaml
+profile:
+	$(PYTHON) -m mortgage_threat_intel.cli profile --config configs/base.yaml --output outputs/data_profile.json
 
-# J-04+ targets — implemented on feat/jainil-hmda-pipeline-baselines-privacy
+smoke:
+	$(PYTHON) -m mortgage_threat_intel.cli smoke --config configs/base.yaml --with-models
+
 baseline:
-	@echo "baseline: run on Jainil feature branch after J-04 wiring"
-	@exit 1
+	$(PYTHON) -m mortgage_threat_intel.cli baseline --config configs/base.yaml --synthetic
 
 privacy:
-	@echo "privacy: run on Jainil feature branch after J-05/J-06 wiring"
-	@exit 1
+	$(PYTHON) -m mortgage_threat_intel.cli privacy --config configs/base.yaml --privacy-config configs/privacy.yaml --synthetic
 
 fairness:
 	@echo "fairness: reserved for Krati (K-02/K-03); not started in Jainil phase"
@@ -48,4 +47,4 @@ robustness:
 	@exit 1
 
 all: smoke
-	@echo "Synthetic smoke complete. Full experiment sequence requires HMDA configs on feature branch."
+	@echo "Synthetic required sequence complete (baseline+privacy via smoke --with-models)."
