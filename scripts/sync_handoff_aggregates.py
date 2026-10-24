@@ -48,9 +48,7 @@ def main() -> int:
     for name, src in COPIES.items():
         payload = json.loads(src.read_text(encoding="utf-8"))
         if name != "data_profile.json":
-            synthetic = bool(
-                (payload.get("manifest") or {}).get("synthetic", False)
-            )
+            synthetic = bool((payload.get("manifest") or {}).get("synthetic", False))
             if synthetic:
                 print(
                     f"Refusing to sync {src}: manifest.synthetic=true. "

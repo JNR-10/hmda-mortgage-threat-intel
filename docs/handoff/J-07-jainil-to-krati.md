@@ -1,12 +1,12 @@
 # Jainil → Krati handoff (J-07)
 
-**Branch:** `feat/jainil-hmda-pipeline-baselines-privacy`  
+**Landing branch:** `main` (merged from `feat/jainil-hmda-pipeline-baselines-privacy`)  
 **Scope:** HMDA proxy pipeline, baselines, matched MLP privacy pair, confidence-score MIA, reproducibility + aggregate handoff.  
 **Not in scope:** K-01–K-06 implementation; DU evaluation; row-level outputs.
 
 ## Start here (Krati)
 
-1. Checkout this branch and set up the env (`README.md` → `make setup`).
+1. Checkout `main` and set up the env (`README.md` → `make setup`).
 2. Read `docs/decisions/T-00-T-01-shared-gates.md` and schedule **joint T-01 sign-off** with Jainil (contract still provisional).
 3. For **K-01** (context / threat register): use plan §7 hypotheses + committed aggregates under `reports/handoff/` — **no HMDA download required**.
 4. For **K-02+** (fairness / TreeSHAP / robustness): download Snapshot LAR once (below), then use the cached development sample so you do **not** re-scan national files every time.
