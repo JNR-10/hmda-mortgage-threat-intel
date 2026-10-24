@@ -1,0 +1,73 @@
+# Frozen experiment defaults (T-01 provisional). Paths are relative or env-overridable.
+# Never hard-code user-specific absolute paths.
+
+project_name: mortgage-threat-intel
+seed: 42
+sample_seed: 42
+device: cpu  # CPU-first; MPS only after DP smoke test
+
+paths:
+  # Override with env HMDA_DATA_DIR if needed
+  data_raw: data/raw
+  data_processed: data/processed
+  outputs: outputs
+  reports: reports
+
+years:
+  train: 2023
+  validation: 2024
+  test: 2025
+  seal_test_outcomes: true
+
+sampling:
+  max_rows_per_year: 100000
+  strategy: deterministic_uniform
+
+target:
+  column: action_taken
+  positive_codes: [1, 2]
+  negative_codes: [3]
+  # All other known codes are excluded; unknown codes fail until reviewed
+  known_excluded_codes: [4, 5, 6, 7, 8]
+  label_name: reported_historical_application_outcome
+
+mia:
+  non_member_fraction: 0.2
+  evaluation_prior: balanced_1_to_1
+
+features:
+  allowlist:
+    - loan_amount
+    - income
+    - debt_to_income_ratio
+    - loan_to_value_ratio
+    - property_value
+    - loan_type
+    - loan_purpose
+    - occupancy_type
+    - lien_status
+    - state_code
+  protected_audit_only:
+    - applicant_race_1
+    - applicant_ethnicity_1
+    - applicant_sex
+    - applicant_age
+  forbidden:
+    - action_taken
+    - denial_reason_1
+    - denial_reason_2
+    - denial_reason_3
+    - denial_reason_4
+    - lei
+    - activity_year
+
+models:
+  audit_model: hist_gradient_boosting
+  reference_baseline: logistic_regression
+  privacy_pair: mlp
+
+utility_metrics:
+  - auroc
+  - auprc
+  - balanced_accuracy
+  - brier_score

@@ -1,0 +1,26 @@
+# Matched MLP privacy ablation (J-05 / J-06). One ε target only.
+
+mlp:
+  hidden_dims: [64, 32]
+  dropout: 0.0
+  epochs: 5
+  batch_size: 256
+  learning_rate: 0.001
+  weight_decay: 0.0
+
+dp_sgd:
+  target_epsilon: 4.0
+  # delta = 1/N for frozen MLP training sample size N (set at train time)
+  max_grad_norm: 1.0
+  # noise_multiplier may be set by accountant search; recorded in run manifest
+  noise_multiplier: null
+  delta_rule: one_over_n
+  adjacency: record_level
+  device: cpu
+
+mia:
+  attack: confidence_score  # max predicted class probability
+  evaluation_prior: balanced_1_to_1
+  n_bootstrap: 200
+  member_years: [2023]
+  # Do not use 2025 as non-member set

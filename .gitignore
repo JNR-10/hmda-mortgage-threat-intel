@@ -1,0 +1,56 @@
+# Virtual environments
+.venv/
+venv/
+env/
+.env/
+.env.*
+
+# Python cache / build
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+*.egg
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+.coverage
+htmlcov/
+.cache/
+
+# Secrets and local env
+*.pem
+*.key
+secrets/
+credentials*
+.DS_Store
+
+# Local HMDA and derived data (never commit)
+data/raw/**
+!data/raw/.gitkeep
+data/processed/**
+!data/processed/.gitkeep
+
+# Generated outputs, models, row-level artifacts
+outputs/**
+!outputs/.gitkeep
+runs/
+*.ckpt
+*.pt
+*.pth
+*.joblib
+*.pkl
+
+# Notebooks checkpoints
+.ipynb_checkpoints/
+
+# IDE / OS
+.idea/
+.vscode/
+*.swp
+*~

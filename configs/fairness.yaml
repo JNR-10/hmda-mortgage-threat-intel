@@ -1,0 +1,21 @@
+# Fairness audit settings (Krati K-02/K-03). Frozen hypotheses from T-01.
+# Jainil does not implement mitigation here; config reserved for stable interfaces.
+
+groups:
+  primary:
+    - applicant_race_1
+    - applicant_sex
+  intersectional: true
+  min_cell_count: 50  # below this, report count and label underpowered
+
+metrics:
+  - demographic_parity_difference
+  - equalized_odds_difference
+
+mitigation:
+  reweighting:
+    fit_on: train_2023
+  equalized_odds_postprocess:
+    select_thresholds_on: validation_2024
+
+audit_model: hist_gradient_boosting
