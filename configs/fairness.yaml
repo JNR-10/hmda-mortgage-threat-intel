@@ -1,5 +1,4 @@
 # Fairness audit settings (Krati K-02/K-03). Frozen hypotheses from T-01.
-# Jainil does not implement mitigation here; config reserved for stable interfaces.
 
 groups:
   primary:
@@ -19,3 +18,7 @@ mitigation:
     select_thresholds_on: validation_2024
 
 audit_model: hist_gradient_boosting
+decision_threshold: 0.5
+n_bootstrap: 200
+# Attribute used for reweighting / EO threshold search (audit-only; never in X).
+mitigation_group_attribute: applicant_sex

@@ -109,6 +109,50 @@ class PrivacyConfig(BaseModel):
     mia: PrivacyMIAConfig = Field(default_factory=PrivacyMIAConfig)
 
 
+class FairnessGroupsConfig(BaseModel):
+    primary: list[str] = Field(default_factory=lambda: ["applicant_race_1", "applicant_sex"])
+    intersectional: bool = True
+    min_cell_count: int = 50
+
+    @field_validator("min_cell_count")
+    @classmethod
+    def _min_cell(cls, v: int) -> int:
+        if v < 1:
+            raise ValueError("min_cell_count must be >= 1")
+        return v
+
+
+class FairnessReweightingConfig(BaseModel):
+    fit_on: str = "train_2023"
+
+
+class FairnessEOPostprocessConfig(BaseModel):
+    select_thresholds_on: str = "validation_2024"
+
+
+class FairnessMitigationConfig(BaseModel):
+    reweighting: FairnessReweightingConfig = Field(default_factory=FairnessReweightingConfig)
+    equalized_odds_postprocess: FairnessEOPostprocessConfig = Field(
+        default_factory=FairnessEOPostprocessConfig
+    )
+
+
+class FairnessConfig(BaseModel):
+    groups: FairnessGroupsConfig = Field(default_factory=FairnessGroupsConfig)
+    metrics: list[str] = Field(
+        default_factory=lambda: [
+            "demographic_parity_difference",
+            "equalized_odds_difference",
+        ]
+    )
+    mitigation: FairnessMitigationConfig = Field(default_factory=FairnessMitigationConfig)
+    audit_model: str = "hist_gradient_boosting"
+    decision_threshold: float = 0.5
+    n_bootstrap: int = 200
+    # Primary attribute used for reweighting / EO thresholds when multiple exist.
+    mitigation_group_attribute: str = "applicant_sex"
+
+
 def _load_yaml(path: Path) -> dict[str, Any]:
     if not path.is_file():
         raise FileNotFoundError(f"Config not found: {path}")
@@ -135,6 +179,11 @@ def load_base_config(path: str | Path) -> BaseConfig:
 def load_privacy_config(path: str | Path) -> PrivacyConfig:
     raw = _load_yaml(Path(path))
     return PrivacyConfig.model_validate(raw)
+
+
+def load_fairness_config(path: str | Path) -> FairnessConfig:
+    raw = _load_yaml(Path(path))
+    return FairnessConfig.model_validate(raw)
 
 
 def default_config_dir() -> Path:

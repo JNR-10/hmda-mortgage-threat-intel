@@ -9,6 +9,7 @@ from mortgage_threat_intel.config import (
     SamplingConfig,
     default_config_dir,
     load_base_config,
+    load_fairness_config,
     load_privacy_config,
 )
 
@@ -25,6 +26,10 @@ def test_load_base_and_privacy_configs():
     assert privacy.dp_sgd.target_epsilon == 4.0
     assert privacy.dp_sgd.adjacency == "record_level"
     assert privacy.mia.attack == "confidence_score"
+
+    fairness = load_fairness_config(default_config_dir() / "fairness.yaml")
+    assert fairness.audit_model == "hist_gradient_boosting"
+    assert fairness.mitigation.reweighting.fit_on == "train_2023"
 
 
 def test_invalid_sample_cap_rejected():

@@ -47,6 +47,7 @@ class HistGradientBoostingBaseline:
         y: np.ndarray,
         seed: int,
         config: dict[str, Any] | None = None,
+        sample_weight: np.ndarray | None = None,
     ) -> HistGradientBoostingBaseline:
         params: dict[str, Any] = {
             "random_state": seed,
@@ -66,7 +67,8 @@ class HistGradientBoostingBaseline:
                 if key in config:
                     params[key] = config[key]
         self._model.set_params(**params)
-        self._model.fit(X, y)
+        # sample_weight supports K-03 reweighting; ignored for unmitigated baseline.
+        self._model.fit(X, y, sample_weight=sample_weight)
         return self
 
     def predict_proba(self, X: np.ndarray) -> np.ndarray:
