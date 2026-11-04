@@ -1,0 +1,31 @@
+{
+  "aggregate_only": true,
+  "changelog": [
+    {
+      "action": "residual_updated",
+      "risk_id": "R1_membership_inference",
+      "source": "reports/handoff/privacy_latest_privacy.json or outputs/privacy"
+    },
+    {
+      "action": "residual_updated",
+      "risk_id": "R2_input_integrity"
+    },
+    {
+      "action": "confirmed_untested",
+      "risk_id": "R3_poisoning"
+    },
+    {
+      "action": "residual_updated",
+      "risk_id": "R4_unequal_error_rates"
+    },
+    {
+      "action": "kept_deferred",
+      "risk_id": "R5_temporal_drift"
+    },
+    {
+      "action": "residual_updated",
+      "risk_id": "R6_explanation_quality"
+    }
+  ],
+  "register_out": "reports\\threat_register_residual.yaml"
+}
