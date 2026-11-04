@@ -1,0 +1,356 @@
+# Threat register — K-01 (initial / planning scores)
+# Residual scores are updated in K-06 after K-02–K-05 evidence.
+# Claims vs observations vs hypotheses are separated in evidence_refs.
+schema_version: "1.0"
+project: mortgage-threat-intel
+proxy_boundary: >
+  Offline HMDA research proxy predicting reported historical application outcomes.
+  Fannie Mae Desktop Underwriter is public deployment context only — not accessed,
+  reproduced, or evaluated. No creditworthiness, compliance, or person-level DP claims.
+
+scales:
+  likelihood:
+    - score: 1
+      meaning: Requires privileged insider conditions or rare access.
+    - score: 2
+      meaning: Needs specialized access or uncommon capability.
+    - score: 3
+      meaning: Feasible for a motivated outsider with some resources.
+    - score: 4
+      meaning: Readily available tooling and moderate exposure.
+    - score: 5
+      meaning: Broadly available capability and exposed interface.
+  impact:
+    - score: 1
+      meaning: Limited, local, and reversible effect.
+    - score: 2
+      meaning: Narrow harm with low persistence.
+    - score: 3
+      meaning: Material audit, privacy, or reliability degradation.
+    - score: 4
+      meaning: Significant privacy, integrity, or unequal-error harm.
+    - score: 5
+      meaning: Large-scale privacy, access, or financial harm.
+
+risks:
+  - risk_id: R1_membership_inference
+    title: Black-box membership inference
+    hypothesis: >
+      An external black-box user who observes model confidence scores can infer
+      whether a candidate record was in the training set.
+    asset_or_harm: >
+      Privacy of represented HMDA records; possible disclosure of training-set
+      participation under the stated access model.
+    access_assumptions: >
+      Attacker obtains predicted class probabilities for candidate records; no
+      access to parameters, training files, or a production lender API.
+    atlas_mapping: Infer Training Data Membership (ATLAS — confirm current ID/name)
+    atlas_note: >
+      Provisional mapping to ATLAS membership-inference technique family; confirm
+      exact technique name and ID against current atlas.mitre.org before the final report.
+    is_adversarial: true
+    inherent:
+      likelihood: 4
+      impact: 3
+      product: 12
+      rationale: >
+        Confidence scores are a common black-box output; likelihood is high if
+        scores are exposed. Impact is material for participation privacy but
+        bounded by HMDA public-use modifications and record-level (not person-level)
+        adjacency.
+    residual:
+      likelihood: 3
+      impact: 3
+      product: 9
+      rationale: >
+        Initial residual after Jainil DP-SGD + output-minimization posture for the
+        matched MLP pair. Handoff MIA is near-random under this attack; full residual
+        rewrite deferred to K-06 after documenting controls and limits.
+    evidence_confidence: medium
+    evidence_status: measured
+    test_or_signal: >
+      Confidence-score MIA AUC/advantage on matched non-private vs DP MLPs;
+      balanced 1:1 evaluation prior; 2023 members vs same-year non-members.
+    planned_control: >
+      DP-SGD at one requested ε with accountant-reported ε/δ; minimize exposed
+      outputs; access monitoring if ever deployed (proposed, not implemented here).
+    monitoring_signals:
+      - mia_auc_vs_chance
+      - mia_advantage
+      - achieved_epsilon_at_delta
+    evidence_refs:
+      - kind: hypothesis
+        summary: T-01 frozen membership-inference hypothesis (plan §7).
+        source: docs/decisions/T-00-T-01-shared-gates.md
+      - kind: project_observation
+        summary: >
+          MIA AUC≈0.500 (DP) / ≈0.499 (non-private); advantage≈0.006 / 0.005;
+          disjoint members/non-members; prior balanced_1_to_1.
+        source: reports/handoff/privacy_latest_privacy.json
+      - kind: project_observation
+        summary: >
+          Achieved ε≈3.994 at δ=1.25e-05; record-level adjacency; target ε=4 not
+          reported as the guarantee.
+        source: reports/handoff/privacy_latest_privacy.json
+      - kind: public_claim
+        summary: HMDA public files are privacy-modified.
+        source: https://ffiec.cfpb.gov/data-publication/
+    residual_update_ticket: K-06
+    notes: >
+      Near-random MIA here is evidence only for this offline attack, model, and
+      access assumption — not proof of privacy against every attacker.
+
+  - risk_id: R2_input_integrity
+    title: Missing or invalid input fields change results
+    hypothesis: >
+      Missing or invalid input fields among high-impact non-sensitive features can
+      change model scores (controlled input-failure hypothesis).
+    asset_or_harm: Prediction integrity and downstream decision quality if misused.
+    access_assumptions: >
+      Ability to submit or observe records with missing/invalid fields on an
+      experimental copy; not assumed to be a feasible borrower attack on a live system.
+    atlas_mapping: null
+    atlas_note: >
+      Treated as an input-integrity / reliability failure hypothesis. Map to an ATLAS
+      evasion technique only if a jointly reviewed mechanism fit is documented.
+    is_adversarial: false
+    inherent:
+      likelihood: 4
+      impact: 3
+      product: 12
+      rationale: >
+        Missingness is common in HMDA-like fields; likelihood of encountering
+        incomplete inputs is high. Impact is material for score stability but
+        this project measures a controlled stress, not a live attack.
+    residual:
+      likelihood: 4
+      impact: 3
+      product: 12
+      rationale: >
+        No mitigation measured yet. Residual remains at inherent until K-05
+        missingness stress and K-06 update.
+    evidence_confidence: low
+    evidence_status: planned
+    test_or_signal: >
+      One 10% missingness stress on five top non-sensitive features selected from
+      2023 training data; apply already-fitted preprocessing (K-05).
+    planned_control: >
+      Input validation, range/consistency checks, human review for invalid records
+      (proposed deployment controls).
+    monitoring_signals:
+      - missingness_rate_by_feature
+      - utility_delta_under_stress
+      - fairness_delta_under_stress
+    evidence_refs:
+      - kind: hypothesis
+        summary: T-01 input-integrity hypothesis (plan §7).
+        source: docs/decisions/T-00-T-01-shared-gates.md
+      - kind: project_observation
+        summary: Non-trivial missingness on CLTV/DTI/income/property_value in 2023 profile.
+        source: reports/handoff/data_profile.json
+    residual_update_ticket: K-06
+    notes: Controlled failure test — not evidence of a demonstrated evasion attack.
+
+  - risk_id: R3_poisoning
+    title: Training data or preprocessing altered
+    hypothesis: >
+      An adversary or operational error alters training data or preprocessing,
+      degrading model integrity and auditability (poisoning / data-integrity).
+    asset_or_harm: Model integrity, reproducibility, and audit trail.
+    access_assumptions: >
+      Write access to training snapshots, transformation code, or pipeline configs —
+      typically insider or supply-chain privilege.
+    atlas_mapping: Poison Training Data (ATLAS — confirm current ID/name)
+    atlas_note: >
+      Provisional ATLAS poisoning family mapping; confirm exact technique ID/name.
+      Empirical poisoning resistance is explicitly untested in the core plan.
+    is_adversarial: true
+    inherent:
+      likelihood: 2
+      impact: 4
+      product: 8
+      rationale: >
+        Likelihood is lower because write access to training artifacts is privileged.
+        Impact would be high if undetected corruption changed the audit model.
+    residual:
+      likelihood: 2
+      impact: 4
+      product: 8
+      rationale: >
+        Provenance/hash/schema checks reduce undetected corruption risk but do not
+        empirically prove poisoning resistance. Residual stays aligned with inherent;
+        must remain labeled untested after K-06 unless a new experiment is approved.
+    evidence_confidence: low
+    evidence_status: untested
+    test_or_signal: >
+      No poisoning implementation in core. Observable signals: source hashes, schema
+      checks, distribution/profile diffs, reviewable transform code.
+    planned_control: >
+      Immutable source snapshots, reviewable transformation code, dataset checks,
+      retraining approval.
+    monitoring_signals:
+      - source_sha256_mismatch
+      - schema_validation_failure
+      - unexpected_label_prevalence_shift
+    evidence_refs:
+      - kind: hypothesis
+        summary: T-01 poisoning hypothesis (plan §7); core leaves it untested.
+        source: docs/decisions/T-00-T-01-shared-gates.md
+      - kind: project_observation
+        summary: Development-year source fingerprints and sealed 2025 integrity metadata recorded.
+        source: reports/handoff/data_profile.json
+      - kind: untested
+        summary: Empirical poisoning resistance not measured.
+        source: revised_mortgage_ai_threat_intelligence_implementation_plan.md
+    residual_update_ticket: K-06
+    notes: Do not mark this risk mitigated solely because hashes exist.
+
+  - risk_id: R4_unequal_error_rates
+    title: Unequal error rates across groups
+    hypothesis: >
+      The preselected boosted-tree audit model exhibits unequal selection or error
+      rates across race/ethnicity and sex groups relative to historical HMDA labels.
+    asset_or_harm: Unequal error burden and audit blind spots.
+    access_assumptions: >
+      Offline auditor access to predictions and protected attributes held for audit
+      only (not used as main model inputs).
+    atlas_mapping: null
+    atlas_note: >
+      Socio-technical / reliability risk. Do not map ordinary fairness gaps to an
+      adversary technique unless a malicious mechanism is evidenced.
+    is_adversarial: false
+    inherent:
+      likelihood: 4
+      impact: 4
+      product: 16
+      rationale: >
+        Historical lending outcomes and proxy features make disparate error rates
+        plausible. Impact is high for unequal burden if results were misread as
+        creditworthiness or compliance findings (which this project forbids).
+    residual:
+      likelihood: 4
+      impact: 4
+      product: 16
+      rationale: >
+        No fairness metrics or mitigations measured yet (K-02/K-03). Residual
+        unchanged pending measurement and K-06 update.
+    evidence_confidence: low
+    evidence_status: planned
+    test_or_signal: >
+      Demographic-parity difference and equalized-odds difference on HGB with
+      group counts, CIs, and underpowered-slice labels (K-02); mitigations in K-03.
+    planned_control: >
+      Review thresholds and error patterns; report utility/calibration beside
+      disparity; interpret relative to historical labels only.
+    monitoring_signals:
+      - demographic_parity_difference
+      - equalized_odds_difference
+      - subgroup_cell_counts
+    evidence_refs:
+      - kind: hypothesis
+        summary: T-01 unequal-error-rate hypothesis (plan §7).
+        source: docs/decisions/T-00-T-01-shared-gates.md
+      - kind: project_observation
+        summary: HGB selected as audit model with recorded 2024 utility aggregates.
+        source: reports/handoff/baseline_latest_metrics.json
+    residual_update_ticket: K-06
+    notes: >
+      Disparities describe association with historical reported outcomes — not proof
+      of discrimination, causation, or legal non-compliance.
+
+  - risk_id: R5_temporal_drift
+    title: Later market conditions shift performance
+    hypothesis: >
+      2025 market conditions differ from the 2023 training period, degrading utility
+      and/or fairness metrics on the frozen boosted-tree model.
+    asset_or_harm: Reliability degradation and increased errors over time.
+    access_assumptions: Ordinary time passage / distribution shift; no assumed attacker.
+    atlas_mapping: null
+    atlas_note: >
+      Treat as reliability/drift unless evidence supports malicious causation. Do not
+      map ordinary market drift to ATLAS.
+    is_adversarial: false
+    inherent:
+      likelihood: 4
+      impact: 3
+      product: 12
+      rationale: >
+        Mortgage markets change year to year; likelihood of some shift is high.
+        Impact is material for reliability but not automatically catastrophic.
+    residual:
+      likelihood: 4
+      impact: 3
+      product: 12
+      rationale: >
+        2025 outcomes remain sealed; no temporal metrics yet. Residual unchanged
+        until protocol freeze, K-05 evaluation, and K-06 update.
+    evidence_confidence: low
+    evidence_status: deferred
+    test_or_signal: >
+      Frozen HGB on 2025 after joint protocol freeze; utility/fairness deltas plus
+      one feature-distribution drift statistic (K-05).
+    planned_control: >
+      Monitoring thresholds, revalidation cadence, and sealed-protocol discipline.
+    monitoring_signals:
+      - temporal_auroc_delta
+      - feature_drift_statistic
+      - fairness_metric_delta_vs_2024
+    evidence_refs:
+      - kind: hypothesis
+        summary: T-01 temporal-drift hypothesis (plan §7).
+        source: docs/decisions/T-00-T-01-shared-gates.md
+      - kind: project_observation
+        summary: 2025 sealed in profile metadata (presence/schema/hash only).
+        source: reports/handoff/data_profile.json
+    residual_update_ticket: K-06
+    notes: Open 2025 outcomes only after joint test-protocol freeze.
+
+  - risk_id: R6_explanation_quality
+    title: Unstable or unfaithful explanations
+    hypothesis: >
+      TreeSHAP explanations for the boosted-tree audit model are unstable across
+      seeds or do not track model score changes under top-feature ablation.
+    asset_or_harm: Auditability and ability to investigate a model result.
+    access_assumptions: >
+      Auditor access to the fitted HGB model and aggregate/local explanation tooling;
+      published local illustrations use synthetic records only.
+    atlas_mapping: null
+    atlas_note: >
+      Explanation-quality / auditability risk. Not mapped to an adversary technique
+      unless a specific manipulation mechanism is in scope.
+    is_adversarial: false
+    inherent:
+      likelihood: 3
+      impact: 3
+      product: 9
+      rationale: >
+        Post-hoc attributions can vary with seeds and background samples; impact is
+        material for audit trust but explanations are not treated as legal reasons codes.
+    residual:
+      likelihood: 3
+      impact: 3
+      product: 9
+      rationale: >
+        No TreeSHAP stability/faithfulness results yet (K-04). Residual unchanged
+        pending measurement and K-06.
+    evidence_confidence: low
+    evidence_status: planned
+    test_or_signal: >
+      Global/local TreeSHAP; three-seed top-k stability; top-feature removal vs
+      random removal faithfulness check (K-04).
+    planned_control: >
+      Explanation validation gates; model review; synthetic-only published local plots.
+    monitoring_signals:
+      - topk_stability_across_seeds
+      - faithfulness_score_delta_vs_random
+    evidence_refs:
+      - kind: hypothesis
+        summary: T-01 explanation-quality hypothesis (plan §7).
+        source: docs/decisions/T-00-T-01-shared-gates.md
+      - kind: public_claim
+        summary: Regulatory specific-reasons context is background only (§1002.9).
+        source: https://www.ecfr.gov/current/title-12/chapter-X/part-1002/subpart-A/section-1002.9
+    residual_update_ticket: K-06
+    notes: >
+      Explanations describe research-model behavior only — not applicant advice or
+      lender adverse-action notices.
