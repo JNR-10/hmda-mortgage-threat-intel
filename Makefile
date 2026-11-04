@@ -4,7 +4,7 @@
 PYTHON ?= .venv/bin/python
 PIP ?= .venv/bin/pip
 
-.PHONY: setup lint test data-check smoke baseline privacy fairness xai robustness all profile handoff-sync
+.PHONY: setup lint test data-check smoke baseline privacy fairness fairness-hmda xai robustness residual-update all profile handoff-sync
 
 setup:
 	python3.11 -m venv .venv
@@ -44,16 +44,19 @@ handoff-sync:
 	$(PYTHON) scripts/sync_handoff_aggregates.py
 
 fairness:
-	@echo "fairness: reserved for Krati (K-02/K-03); see docs/handoff/J-07-jainil-to-krati.md"
-	@exit 1
+	$(PYTHON) -m mortgage_threat_intel.cli fairness --config configs/base.yaml --fairness-config configs/fairness.yaml --synthetic
+
+fairness-hmda:
+	$(PYTHON) -m mortgage_threat_intel.cli fairness --config configs/base.yaml --fairness-config configs/fairness.yaml --no-synthetic
 
 xai:
-	@echo "xai: reserved for Krati (K-04); see docs/handoff/J-07-jainil-to-krati.md"
-	@exit 1
+	$(PYTHON) -m mortgage_threat_intel.cli xai --config configs/base.yaml --synthetic
 
 robustness:
-	@echo "robustness: reserved for Krati (K-05); see docs/handoff/J-07-jainil-to-krati.md"
-	@exit 1
+	$(PYTHON) -m mortgage_threat_intel.cli robustness --config configs/base.yaml --fairness-config configs/fairness.yaml --synthetic
 
-all: smoke
-	@echo "Synthetic required sequence complete (baseline+privacy via smoke --with-models)."
+residual-update:
+	$(PYTHON) -m mortgage_threat_intel.cli residual-update --register reports/threat_register.yaml --output reports/threat_register_residual.yaml
+
+all: smoke fairness xai robustness residual-update
+	@echo "Synthetic Krati+Jainil smoke sequence complete (no HMDA / 2025 sealed)."

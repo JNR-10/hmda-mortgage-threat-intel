@@ -82,7 +82,11 @@ make profile       # aggregate 2023/2024 profile (2025 sealed; needs local LAR)
 make baseline      # real HMDA LR + HGB (needs local LAR; uses processed cache)
 make privacy       # real HMDA DP-SGD + MIA (needs local LAR)
 make handoff-sync  # copy aggregate JSON into reports/handoff/ (commit-safe)
-make all           # synthetic smoke path
+make fairness      # synthetic HGB fairness + mitigations (K-02/K-03)
+make xai           # synthetic TreeSHAP stability/faithfulness (K-04)
+make robustness    # synthetic missingness + sealed temporal path (K-05)
+make residual-update  # update threat-register residuals from aggregates (K-06)
+make all           # synthetic smoke + fairness + xai + robustness + residual-update
 ```
 
 CLI:
