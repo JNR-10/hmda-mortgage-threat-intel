@@ -114,6 +114,65 @@ def _cmd_privacy(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_fairness(args: argparse.Namespace) -> int:
+    from mortgage_threat_intel.config import load_fairness_config
+    from mortgage_threat_intel.experiments.fairness import run_fairness
+
+    base = load_base_config(Path(args.config))
+    fairness = load_fairness_config(Path(args.fairness_config))
+    payload = run_fairness(
+        base_config=base,
+        fairness_config=fairness,
+        use_synthetic=args.synthetic,
+        include_mitigations=not args.metrics_only,
+    )
+    print(f"fairness OK run_id={payload['manifest']['run_id']}")
+    print(f"variants={[v['variant'] for v in payload['variants']]}")
+    return 0
+
+
+def _cmd_xai(args: argparse.Namespace) -> int:
+    from mortgage_threat_intel.experiments.xai import run_xai
+
+    base = load_base_config(Path(args.config))
+    payload = run_xai(config=base, use_synthetic=args.synthetic)
+    print(f"xai OK run_id={payload['manifest']['run_id']}")
+    stab = payload["results"]["stability"]["mean_pairwise_jaccard"]
+    print(f"top_k_stability_jaccard={stab}")
+    return 0
+
+
+def _cmd_robustness(args: argparse.Namespace) -> int:
+    from mortgage_threat_intel.config import load_fairness_config
+    from mortgage_threat_intel.experiments.robustness import run_robustness
+
+    base = load_base_config(Path(args.config))
+    fairness = load_fairness_config(Path(args.fairness_config))
+    payload = run_robustness(
+        base_config=base,
+        fairness_config=fairness,
+        use_synthetic=args.synthetic,
+        open_2025=args.open_2025,
+    )
+    print(f"robustness OK run_id={payload['manifest']['run_id']}")
+    print(f"used_2025={payload['manifest']['used_2025']}")
+    return 0
+
+
+def _cmd_residual_update(args: argparse.Namespace) -> int:
+    from mortgage_threat_intel.threats.residual import run_residual_update
+
+    result = run_residual_update(
+        register_path=Path(args.register),
+        output_path=Path(args.output),
+        outputs_root=Path(args.outputs_root),
+        handoff_root=Path(args.handoff_root),
+    )
+    print(f"residual-update OK -> {result['register_out']}")
+    print(f"changelog={result['changelog']}")
+    return 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="mortgage-threat-intel",
@@ -169,6 +228,64 @@ def build_parser() -> argparse.ArgumentParser:
         default=True,
     )
     p_priv.set_defaults(func=_cmd_privacy)
+
+    p_fair = sub.add_parser(
+        "fairness",
+        help="Fairness metrics (+ mitigations) on boosted-tree audit model",
+    )
+    p_fair.add_argument("--config", default=str(default_config_dir() / "base.yaml"))
+    p_fair.add_argument(
+        "--fairness-config",
+        default=str(default_config_dir() / "fairness.yaml"),
+    )
+    p_fair.add_argument(
+        "--synthetic",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    p_fair.add_argument(
+        "--metrics-only",
+        action="store_true",
+        help="Skip reweighting / EO post-processing (K-02 path)",
+    )
+    p_fair.set_defaults(func=_cmd_fairness)
+
+    p_xai = sub.add_parser("xai", help="TreeSHAP stability/faithfulness on HGB audit model")
+    p_xai.add_argument("--config", default=str(default_config_dir() / "base.yaml"))
+    p_xai.add_argument(
+        "--synthetic",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    p_xai.set_defaults(func=_cmd_xai)
+
+    p_rob = sub.add_parser("robustness", help="Temporal + missingness stress on HGB")
+    p_rob.add_argument("--config", default=str(default_config_dir() / "base.yaml"))
+    p_rob.add_argument(
+        "--fairness-config",
+        default=str(default_config_dir() / "fairness.yaml"),
+    )
+    p_rob.add_argument(
+        "--synthetic",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+    )
+    p_rob.add_argument(
+        "--open-2025",
+        action="store_true",
+        help="Open real 2025 outcomes (requires protocol freeze doc + unsealed config)",
+    )
+    p_rob.set_defaults(func=_cmd_robustness)
+
+    p_res = sub.add_parser(
+        "residual-update",
+        help="Update threat-register residual scores from aggregate evidence (K-06)",
+    )
+    p_res.add_argument("--register", default="reports/threat_register.yaml")
+    p_res.add_argument("--output", default="reports/threat_register_residual.yaml")
+    p_res.add_argument("--outputs-root", default="outputs")
+    p_res.add_argument("--handoff-root", default="reports/handoff")
+    p_res.set_defaults(func=_cmd_residual_update)
 
     p_ver = sub.add_parser("version", help="Print package version")
     p_ver.set_defaults(func=_cmd_version)
