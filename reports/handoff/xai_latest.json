@@ -1,0 +1,946 @@
+{
+  "aggregate_only": true,
+  "manifest": {
+    "aggregate_only": true,
+    "audit_model": "hist_gradient_boosting",
+    "background_max": 100,
+    "command": "xai",
+    "config_paths": [
+      "configs/base.yaml"
+    ],
+    "device": "cpu",
+    "explain_max": 1000,
+    "method": "TreeSHAP",
+    "no_lime_or_counterfactuals": true,
+    "row_level_outputs": false,
+    "run_id": "efdad606-7a7a-4221-8918-4e6c6b1793bd",
+    "seed": 42,
+    "synthetic": false,
+    "timestamp_utc": "2026-11-05T17:47:43.801145+00:00",
+    "used_2025": false,
+    "xai_seeds": [
+      42,
+      43,
+      44
+    ]
+  },
+  "results": {
+    "aggregate_only": true,
+    "background_rows": 100,
+    "explained_rows": 1000,
+    "faithfulness_by_seed": [
+      {
+        "faithfulness_ratio": 28.729012211805916,
+        "k": 5,
+        "mean_abs_score_change_random": 0.00494948972788751,
+        "mean_abs_score_change_top": 0.14219395083468822,
+        "n_random_draws": 5,
+        "note": "Higher faithfulness_ratio means top-SHAP features change scores more than random features under mean-imputation ablation (behavioral check, not causal)."
+      },
+      {
+        "faithfulness_ratio": 9.259514605668073,
+        "k": 5,
+        "mean_abs_score_change_random": 0.015133614177085933,
+        "mean_abs_score_change_top": 0.14012992150927261,
+        "n_random_draws": 5,
+        "note": "Higher faithfulness_ratio means top-SHAP features change scores more than random features under mean-imputation ablation (behavioral check, not causal)."
+      },
+      {
+        "faithfulness_ratio": 12.896855754292005,
+        "k": 5,
+        "mean_abs_score_change_random": 0.011023554826250849,
+        "mean_abs_score_change_top": 0.14216919649368667,
+        "n_random_draws": 5,
+        "note": "Higher faithfulness_ratio means top-SHAP features change scores more than random features under mean-imputation ablation (behavioral check, not causal)."
+      }
+    ],
+    "faithfulness_mean_ratio": 16.961794190588666,
+    "global_ranking_seed0": [
+      {
+        "feature": "f22",
+        "mean_abs_shap": 0.523454947405977,
+        "rank": 0
+      },
+      {
+        "feature": "f29",
+        "mean_abs_shap": 0.5212572491008897,
+        "rank": 1
+      },
+      {
+        "feature": "combined_loan_to_value_ratio",
+        "mean_abs_shap": 0.2795938965908542,
+        "rank": 2
+      },
+      {
+        "feature": "debt_to_income_ratio",
+        "mean_abs_shap": 0.2199346583967104,
+        "rank": 3
+      },
+      {
+        "feature": "f20",
+        "mean_abs_shap": 0.19488980316696974,
+        "rank": 4
+      },
+      {
+        "feature": "loan_amount",
+        "mean_abs_shap": 0.1438186187290722,
+        "rank": 5
+      },
+      {
+        "feature": "income",
+        "mean_abs_shap": 0.14315174950211804,
+        "rank": 6
+      },
+      {
+        "feature": "f24",
+        "mean_abs_shap": 0.09783327437218389,
+        "rank": 7
+      },
+      {
+        "feature": "f25",
+        "mean_abs_shap": 0.05721027359382117,
+        "rank": 8
+      },
+      {
+        "feature": "f49",
+        "mean_abs_shap": 0.05040077959737315,
+        "rank": 9
+      },
+      {
+        "feature": "f31",
+        "mean_abs_shap": 0.04757638704634009,
+        "rank": 10
+      },
+      {
+        "feature": "f33",
+        "mean_abs_shap": 0.0421880006970414,
+        "rank": 11
+      },
+      {
+        "feature": "f27",
+        "mean_abs_shap": 0.04167418269108627,
+        "rank": 12
+      },
+      {
+        "feature": "f21",
+        "mean_abs_shap": 0.039980813217075584,
+        "rank": 13
+      },
+      {
+        "feature": "f23",
+        "mean_abs_shap": 0.039578059946390264,
+        "rank": 14
+      },
+      {
+        "feature": "f37",
+        "mean_abs_shap": 0.036840094006484955,
+        "rank": 15
+      },
+      {
+        "feature": "f85",
+        "mean_abs_shap": 0.033476129740057675,
+        "rank": 16
+      },
+      {
+        "feature": "f26",
+        "mean_abs_shap": 0.027034996287166935,
+        "rank": 17
+      },
+      {
+        "feature": "f38",
+        "mean_abs_shap": 0.02543937495891943,
+        "rank": 18
+      },
+      {
+        "feature": "f30",
+        "mean_abs_shap": 0.024443399041872187,
+        "rank": 19
+      },
+      {
+        "feature": "f90",
+        "mean_abs_shap": 0.02191935743808777,
+        "rank": 20
+      },
+      {
+        "feature": "f44",
+        "mean_abs_shap": 0.018634926922250345,
+        "rank": 21
+      },
+      {
+        "feature": "loan_type",
+        "mean_abs_shap": 0.01669180357352469,
+        "rank": 22
+      },
+      {
+        "feature": "f63",
+        "mean_abs_shap": 0.01181479878253505,
+        "rank": 23
+      },
+      {
+        "feature": "f36",
+        "mean_abs_shap": 0.010965489353699133,
+        "rank": 24
+      },
+      {
+        "feature": "f39",
+        "mean_abs_shap": 0.01042675123941184,
+        "rank": 25
+      },
+      {
+        "feature": "f32",
+        "mean_abs_shap": 0.010123529467185982,
+        "rank": 26
+      },
+      {
+        "feature": "f52",
+        "mean_abs_shap": 0.009910836617995739,
+        "rank": 27
+      },
+      {
+        "feature": "f35",
+        "mean_abs_shap": 0.009414624800460666,
+        "rank": 28
+      },
+      {
+        "feature": "f19",
+        "mean_abs_shap": 0.008745477241095995,
+        "rank": 29
+      },
+      {
+        "feature": "f50",
+        "mean_abs_shap": 0.008162209206655441,
+        "rank": 30
+      },
+      {
+        "feature": "f67",
+        "mean_abs_shap": 0.007303686669548622,
+        "rank": 31
+      },
+      {
+        "feature": "f17",
+        "mean_abs_shap": 0.007028638195042267,
+        "rank": 32
+      },
+      {
+        "feature": "f16",
+        "mean_abs_shap": 0.006991250277123264,
+        "rank": 33
+      },
+      {
+        "feature": "f12",
+        "mean_abs_shap": 0.006874132821369138,
+        "rank": 34
+      },
+      {
+        "feature": "f86",
+        "mean_abs_shap": 0.006286740659366784,
+        "rank": 35
+      },
+      {
+        "feature": "f55",
+        "mean_abs_shap": 0.005425407264167943,
+        "rank": 36
+      },
+      {
+        "feature": "f18",
+        "mean_abs_shap": 0.005201180589382967,
+        "rank": 37
+      },
+      {
+        "feature": "f10",
+        "mean_abs_shap": 0.005047873062531656,
+        "rank": 38
+      },
+      {
+        "feature": "f70",
+        "mean_abs_shap": 0.0045093064514906776,
+        "rank": 39
+      },
+      {
+        "feature": "f72",
+        "mean_abs_shap": 0.004364160154824658,
+        "rank": 40
+      },
+      {
+        "feature": "f58",
+        "mean_abs_shap": 0.004283578581832486,
+        "rank": 41
+      },
+      {
+        "feature": "f76",
+        "mean_abs_shap": 0.0033542451698277834,
+        "rank": 42
+      },
+      {
+        "feature": "f43",
+        "mean_abs_shap": 0.00328948821595732,
+        "rank": 43
+      },
+      {
+        "feature": "f64",
+        "mean_abs_shap": 0.0029859796446648195,
+        "rank": 44
+      },
+      {
+        "feature": "f60",
+        "mean_abs_shap": 0.00268577937315013,
+        "rank": 45
+      },
+      {
+        "feature": "f56",
+        "mean_abs_shap": 0.002553657038713062,
+        "rank": 46
+      },
+      {
+        "feature": "f83",
+        "mean_abs_shap": 0.002480161571430083,
+        "rank": 47
+      },
+      {
+        "feature": "f53",
+        "mean_abs_shap": 0.002346736373906545,
+        "rank": 48
+      },
+      {
+        "feature": "f74",
+        "mean_abs_shap": 0.002135476438287229,
+        "rank": 49
+      },
+      {
+        "feature": "f15",
+        "mean_abs_shap": 0.0015218069756736952,
+        "rank": 50
+      },
+      {
+        "feature": "property_value",
+        "mean_abs_shap": 0.0011487051879711181,
+        "rank": 51
+      },
+      {
+        "feature": "f82",
+        "mean_abs_shap": 0.001135047797726314,
+        "rank": 52
+      },
+      {
+        "feature": "f57",
+        "mean_abs_shap": 0.0010517299906059234,
+        "rank": 53
+      },
+      {
+        "feature": "f75",
+        "mean_abs_shap": 0.0009354297680350087,
+        "rank": 54
+      },
+      {
+        "feature": "f59",
+        "mean_abs_shap": 0.0007987129243107271,
+        "rank": 55
+      },
+      {
+        "feature": "f11",
+        "mean_abs_shap": 0.0007590576196580159,
+        "rank": 56
+      },
+      {
+        "feature": "f41",
+        "mean_abs_shap": 0.0005865280375823979,
+        "rank": 57
+      },
+      {
+        "feature": "f79",
+        "mean_abs_shap": 0.0005701457328267575,
+        "rank": 58
+      },
+      {
+        "feature": "f68",
+        "mean_abs_shap": 0.0005578921145012746,
+        "rank": 59
+      },
+      {
+        "feature": "f47",
+        "mean_abs_shap": 0.0005529726384825571,
+        "rank": 60
+      },
+      {
+        "feature": "f62",
+        "mean_abs_shap": 0.0005501917267780697,
+        "rank": 61
+      },
+      {
+        "feature": "lien_status",
+        "mean_abs_shap": 0.00043830041397686323,
+        "rank": 62
+      },
+      {
+        "feature": "f78",
+        "mean_abs_shap": 0.00043637889329078175,
+        "rank": 63
+      },
+      {
+        "feature": "loan_purpose",
+        "mean_abs_shap": 0.0003926988489310344,
+        "rank": 64
+      },
+      {
+        "feature": "f81",
+        "mean_abs_shap": 0.00034502462005174355,
+        "rank": 65
+      },
+      {
+        "feature": "f14",
+        "mean_abs_shap": 0.0002678567197326684,
+        "rank": 66
+      },
+      {
+        "feature": "f89",
+        "mean_abs_shap": 0.00020414439892478303,
+        "rank": 67
+      },
+      {
+        "feature": "f42",
+        "mean_abs_shap": 0.00017874622413340902,
+        "rank": 68
+      },
+      {
+        "feature": "f13",
+        "mean_abs_shap": 0.00016272099835285372,
+        "rank": 69
+      },
+      {
+        "feature": "state_code",
+        "mean_abs_shap": 0.00013797107331904463,
+        "rank": 70
+      },
+      {
+        "feature": "f46",
+        "mean_abs_shap": 0.0001287642081380557,
+        "rank": 71
+      },
+      {
+        "feature": "f45",
+        "mean_abs_shap": 0.00012648756664279982,
+        "rank": 72
+      },
+      {
+        "feature": "f28",
+        "mean_abs_shap": 9.500386076591168e-05,
+        "rank": 73
+      },
+      {
+        "feature": "f73",
+        "mean_abs_shap": 9.175732210915343e-05,
+        "rank": 74
+      },
+      {
+        "feature": "f51",
+        "mean_abs_shap": 7.925941233643837e-05,
+        "rank": 75
+      },
+      {
+        "feature": "f84",
+        "mean_abs_shap": 7.227899993220979e-05,
+        "rank": 76
+      },
+      {
+        "feature": "f54",
+        "mean_abs_shap": 4.2335626390457245e-05,
+        "rank": 77
+      },
+      {
+        "feature": "f69",
+        "mean_abs_shap": 0.0,
+        "rank": 78
+      },
+      {
+        "feature": "occupancy_type",
+        "mean_abs_shap": 0.0,
+        "rank": 79
+      },
+      {
+        "feature": "f88",
+        "mean_abs_shap": 0.0,
+        "rank": 80
+      },
+      {
+        "feature": "f87",
+        "mean_abs_shap": 0.0,
+        "rank": 81
+      },
+      {
+        "feature": "f34",
+        "mean_abs_shap": 0.0,
+        "rank": 82
+      },
+      {
+        "feature": "f40",
+        "mean_abs_shap": 0.0,
+        "rank": 83
+      },
+      {
+        "feature": "f91",
+        "mean_abs_shap": 0.0,
+        "rank": 84
+      },
+      {
+        "feature": "f48",
+        "mean_abs_shap": 0.0,
+        "rank": 85
+      },
+      {
+        "feature": "f80",
+        "mean_abs_shap": 0.0,
+        "rank": 86
+      },
+      {
+        "feature": "f77",
+        "mean_abs_shap": 0.0,
+        "rank": 87
+      },
+      {
+        "feature": "f61",
+        "mean_abs_shap": 0.0,
+        "rank": 88
+      },
+      {
+        "feature": "f65",
+        "mean_abs_shap": 0.0,
+        "rank": 89
+      },
+      {
+        "feature": "f66",
+        "mean_abs_shap": 0.0,
+        "rank": 90
+      },
+      {
+        "feature": "f71",
+        "mean_abs_shap": 0.0,
+        "rank": 91
+      },
+      {
+        "feature": "f92",
+        "mean_abs_shap": 0.0,
+        "rank": 92
+      }
+    ],
+    "row_level_outputs": false,
+    "seeds": [
+      42,
+      43,
+      44
+    ],
+    "stability": {
+      "k": 5,
+      "mean_pairwise_jaccard": 1.0,
+      "n_seeds": 3,
+      "pairwise_jaccard": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "top_k_by_seed": [
+        [
+          22,
+          29,
+          3,
+          2,
+          20
+        ],
+        [
+          29,
+          22,
+          3,
+          2,
+          20
+        ],
+        [
+          29,
+          22,
+          3,
+          2,
+          20
+        ]
+      ]
+    },
+    "synthetic_local_illustration": {
+      "contributions": [
+        {
+          "feature": "f29",
+          "shap": -0.4151189343118158
+        },
+        {
+          "feature": "f22",
+          "shap": 0.3046456746702285
+        },
+        {
+          "feature": "loan_amount",
+          "shap": -0.29092366018473514
+        },
+        {
+          "feature": "debt_to_income_ratio",
+          "shap": 0.21927005587055817
+        },
+        {
+          "feature": "combined_loan_to_value_ratio",
+          "shap": 0.18699414691400323
+        },
+        {
+          "feature": "f44",
+          "shap": -0.15176627301616116
+        },
+        {
+          "feature": "f20",
+          "shap": 0.13962635986971172
+        },
+        {
+          "feature": "f33",
+          "shap": -0.13587383748883958
+        },
+        {
+          "feature": "loan_type",
+          "shap": 0.0876393647039952
+        },
+        {
+          "feature": "f24",
+          "shap": 0.08284266557144042
+        },
+        {
+          "feature": "f38",
+          "shap": -0.06262575268223654
+        },
+        {
+          "feature": "f85",
+          "shap": 0.033079520932697615
+        },
+        {
+          "feature": "f21",
+          "shap": 0.03205093419734998
+        },
+        {
+          "feature": "f31",
+          "shap": -0.028458299250625034
+        },
+        {
+          "feature": "f49",
+          "shap": 0.028017601613632148
+        },
+        {
+          "feature": "income",
+          "shap": 0.027461428387225574
+        },
+        {
+          "feature": "f39",
+          "shap": -0.026809010434806595
+        },
+        {
+          "feature": "f25",
+          "shap": -0.023831092992299966
+        },
+        {
+          "feature": "f37",
+          "shap": -0.01846484425119543
+        },
+        {
+          "feature": "f90",
+          "shap": -0.01735584428694723
+        },
+        {
+          "feature": "f23",
+          "shap": -0.017002165812388656
+        },
+        {
+          "feature": "f27",
+          "shap": -0.012453105947036516
+        },
+        {
+          "feature": "f26",
+          "shap": 0.01010309228915284
+        },
+        {
+          "feature": "f30",
+          "shap": 0.009888632874032983
+        },
+        {
+          "feature": "f36",
+          "shap": 0.009230009725562252
+        },
+        {
+          "feature": "f63",
+          "shap": -0.006269541973976633
+        },
+        {
+          "feature": "f52",
+          "shap": -0.005290036947725526
+        },
+        {
+          "feature": "f86",
+          "shap": -0.005006377061796306
+        },
+        {
+          "feature": "f16",
+          "shap": 0.004983109899564255
+        },
+        {
+          "feature": "f35",
+          "shap": 0.004215182916833105
+        },
+        {
+          "feature": "f32",
+          "shap": -0.003930194323277288
+        },
+        {
+          "feature": "f50",
+          "shap": 0.0035589817830639914
+        },
+        {
+          "feature": "f55",
+          "shap": -0.0033492578000037976
+        },
+        {
+          "feature": "f18",
+          "shap": 0.003310901225378214
+        },
+        {
+          "feature": "f17",
+          "shap": 0.003172412148006069
+        },
+        {
+          "feature": "f12",
+          "shap": -0.003149583280699113
+        },
+        {
+          "feature": "f58",
+          "shap": 0.0029530932314249005
+        },
+        {
+          "feature": "f70",
+          "shap": -0.002617784055635195
+        },
+        {
+          "feature": "f72",
+          "shap": 0.0025607242024665313
+        },
+        {
+          "feature": "f10",
+          "shap": -0.002489441489561134
+        },
+        {
+          "feature": "property_value",
+          "shap": -0.002333553680073289
+        },
+        {
+          "feature": "f67",
+          "shap": 0.0021036660748925927
+        },
+        {
+          "feature": "f53",
+          "shap": -0.0019213057190468708
+        },
+        {
+          "feature": "f19",
+          "shap": 0.0017167591485759163
+        },
+        {
+          "feature": "f76",
+          "shap": -0.0016806915146596651
+        },
+        {
+          "feature": "f74",
+          "shap": 0.0015121617899955665
+        },
+        {
+          "feature": "f64",
+          "shap": -0.0014037608584107466
+        },
+        {
+          "feature": "f83",
+          "shap": -0.0012231823200163398
+        },
+        {
+          "feature": "f47",
+          "shap": 0.0006622079877347426
+        },
+        {
+          "feature": "f57",
+          "shap": -0.0006586779739763957
+        },
+        {
+          "feature": "f56",
+          "shap": -0.0005889926248563672
+        },
+        {
+          "feature": "f43",
+          "shap": 0.0004872093142772202
+        },
+        {
+          "feature": "f15",
+          "shap": 0.0004635016485891882
+        },
+        {
+          "feature": "f41",
+          "shap": -0.00045267487944656524
+        },
+        {
+          "feature": "f82",
+          "shap": 0.00032684620818525484
+        },
+        {
+          "feature": "f75",
+          "shap": 0.00032166863455683085
+        },
+        {
+          "feature": "f59",
+          "shap": -0.0002782409277728341
+        },
+        {
+          "feature": "f68",
+          "shap": 0.00022042769039172324
+        },
+        {
+          "feature": "f62",
+          "shap": -0.00021658080846350176
+        },
+        {
+          "feature": "f78",
+          "shap": -0.00021477388955834116
+        },
+        {
+          "feature": "f79",
+          "shap": 0.00018956853979558845
+        },
+        {
+          "feature": "f11",
+          "shap": 0.0001894575837788764
+        },
+        {
+          "feature": "lien_status",
+          "shap": -0.0001845647963784351
+        },
+        {
+          "feature": "loan_purpose",
+          "shap": -0.000115803135679706
+        },
+        {
+          "feature": "f81",
+          "shap": -8.35506956200771e-05
+        },
+        {
+          "feature": "f60",
+          "shap": 6.62521752740552e-05
+        },
+        {
+          "feature": "f46",
+          "shap": -4.593766745352869e-05
+        },
+        {
+          "feature": "f14",
+          "shap": 4.5356077536908986e-05
+        },
+        {
+          "feature": "f89",
+          "shap": 3.943638181739119e-05
+        },
+        {
+          "feature": "f13",
+          "shap": 3.8393640146069274e-05
+        },
+        {
+          "feature": "f45",
+          "shap": 3.834719155467536e-05
+        },
+        {
+          "feature": "state_code",
+          "shap": 3.8122354312511336e-05
+        },
+        {
+          "feature": "f51",
+          "shap": 3.692480317667656e-05
+        },
+        {
+          "feature": "f84",
+          "shap": -3.440255488057047e-05
+        },
+        {
+          "feature": "f73",
+          "shap": 3.201687777633073e-05
+        },
+        {
+          "feature": "f42",
+          "shap": 3.055363544069082e-05
+        },
+        {
+          "feature": "f28",
+          "shap": -1.9406890951060504e-05
+        },
+        {
+          "feature": "f54",
+          "shap": -1.0801056751289424e-05
+        },
+        {
+          "feature": "f65",
+          "shap": 0.0
+        },
+        {
+          "feature": "occupancy_type",
+          "shap": 0.0
+        },
+        {
+          "feature": "f88",
+          "shap": 0.0
+        },
+        {
+          "feature": "f87",
+          "shap": 0.0
+        },
+        {
+          "feature": "f40",
+          "shap": 0.0
+        },
+        {
+          "feature": "f80",
+          "shap": 0.0
+        },
+        {
+          "feature": "f66",
+          "shap": 0.0
+        },
+        {
+          "feature": "f77",
+          "shap": 0.0
+        },
+        {
+          "feature": "f91",
+          "shap": 0.0
+        },
+        {
+          "feature": "f48",
+          "shap": 0.0
+        },
+        {
+          "feature": "f71",
+          "shap": 0.0
+        },
+        {
+          "feature": "f69",
+          "shap": 0.0
+        },
+        {
+          "feature": "f61",
+          "shap": 0.0
+        },
+        {
+          "feature": "f34",
+          "shap": 0.0
+        },
+        {
+          "feature": "f92",
+          "shap": 0.0
+        }
+      ],
+      "expected_value": 1.4071014250326548,
+      "note": "Synthetic HMDA-like illustration only \u2014 not a real applicant; not advice; not a legal adverse-action notice.",
+      "record_label": "SYNTHETIC_HMDA_LIKE_RECORD"
+    },
+    "top_k": 5
+  },
+  "row_level_outputs": false
+}

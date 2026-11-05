@@ -19,6 +19,7 @@ mitigation:
 
 audit_model: hist_gradient_boosting
 decision_threshold: 0.5
-n_bootstrap: 200
+# 100 replicates × ≤20k rows per draw (see fairness.metrics._bootstrap_disparity_ci).
+n_bootstrap: 100
 # Attribute used for reweighting / EO threshold search (audit-only; never in X).
 mitigation_group_attribute: applicant_sex

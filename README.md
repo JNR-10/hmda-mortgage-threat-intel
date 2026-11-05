@@ -87,7 +87,11 @@ make xai           # synthetic TreeSHAP stability/faithfulness (K-04)
 make robustness    # synthetic missingness + sealed temporal path (K-05)
 make residual-update  # update threat-register residuals from aggregates (K-06)
 make all           # synthetic smoke + fairness + xai + robustness + residual-update
+make fairness-hmda xai-hmda robustness-hmda  # real HMDA (local LAR)
+make hmda-closeout # real baseline→privacy→fairness→xai→robustness(2025)→handoff→residual
 ```
+
+Final report: `reports/final_report.md`. Demo script: `docs/demo.md`. Protocol freeze: `docs/decisions/T-01-2025-protocol-freeze.md`.
 
 CLI:
 
@@ -103,7 +107,7 @@ Place annual Snapshot LAR files under `data/raw/` (or set `HMDA_DATA_DIR`):
 
 - `data/raw/hmda_2023.csv.gz`
 - `data/raw/hmda_2024.csv.gz`
-- `data/raw/hmda_2025.csv.gz` (presence/schema/hash only until protocol freeze)
+- `data/raw/hmda_2025.csv.gz` (temporal holdout after `T-01-2025-protocol-freeze.md`)
 
 **Download URLs, curl/gzip recipe, and SHA-256 provenance:** `data/README.md` and `data/download_manifest.json`.
 

@@ -252,9 +252,15 @@ def run_residual_update(
     privacy = _read_json(handoff_root / "privacy_latest_privacy.json") or _read_json(
         outputs_root / "privacy" / "latest_privacy.json"
     )
-    fairness = _read_json(outputs_root / "fairness" / "latest_fairness.json")
-    xai = _read_json(outputs_root / "xai" / "latest_xai.json")
-    robustness = _read_json(outputs_root / "robustness" / "latest_robustness.json")
+    fairness = _read_json(handoff_root / "fairness_latest.json") or _read_json(
+        outputs_root / "fairness" / "latest_fairness.json"
+    )
+    xai = _read_json(handoff_root / "xai_latest.json") or _read_json(
+        outputs_root / "xai" / "latest_xai.json"
+    )
+    robustness = _read_json(handoff_root / "robustness_latest.json") or _read_json(
+        outputs_root / "robustness" / "latest_robustness.json"
+    )
 
     updated, changelog = update_register_from_evidence(
         register,

@@ -94,14 +94,22 @@ def _bootstrap_disparity_ci(
     threshold: float,
     n_bootstrap: int,
     seed: int,
+    max_bootstrap_rows: int = 20_000,
 ) -> tuple[float, float, float]:
+    """Bootstrap CIs for disparity metrics.
+
+    For large validation sets, each replicate draws ``min(n, max_bootstrap_rows)``
+    rows with replacement so real-HMDA runs stay CPU-feasible while still
+    reporting uncertainty.
+    """
     rng = np.random.default_rng(seed)
     n = len(y_true)
     if n == 0:
         return float("nan"), float("nan"), float("nan")
+    draw_n = min(n, max_bootstrap_rows)
     stats: list[float] = []
     for _ in range(n_bootstrap):
-        idx = rng.integers(0, n, size=n)
+        idx = rng.integers(0, n, size=draw_n)
         y_b = y_true[idx]
         p_b = p1[idx]
         g_b = group[idx]

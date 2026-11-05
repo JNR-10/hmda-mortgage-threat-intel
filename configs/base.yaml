@@ -17,7 +17,8 @@ years:
   train: 2023
   validation: 2024
   test: 2025
-  seal_test_outcomes: true
+  # Opened only after docs/decisions/T-01-2025-protocol-freeze.md (T-02 temporal eval).
+  seal_test_outcomes: false
 
 sampling:
   max_rows_per_year: 100000

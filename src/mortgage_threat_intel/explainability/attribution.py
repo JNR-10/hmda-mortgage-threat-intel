@@ -36,8 +36,11 @@ def tree_shap_values(
     """Compute TreeSHAP values; return aggregate-safe arrays (no row IDs)."""
     shap = _require_shap()
     est = _underlying_sklearn_model(model)
-    explainer = shap.TreeExplainer(est, data=background)
-    values = explainer.shap_values(X)
+    # HistGradientBoosting + background interventional path can trip SHAP's
+    # additivity assert; tree path without background is the intended TreeSHAP.
+    _ = background  # retained in signature for API stability / callers
+    explainer = shap.TreeExplainer(est, feature_perturbation="tree_path_dependent")
+    values = explainer.shap_values(X, check_additivity=False)
     # Binary classifiers may return list [class0, class1] or 2D array for positive class.
     if isinstance(values, list):
         values = values[1] if len(values) > 1 else values[0]

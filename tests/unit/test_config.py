@@ -15,11 +15,17 @@ from mortgage_threat_intel.config import (
 
 
 def test_load_base_and_privacy_configs():
+    from pathlib import Path
+
     base = load_base_config(default_config_dir() / "base.yaml")
     assert base.sampling.max_rows_per_year == 100_000
     assert base.years.test == 2025
-    assert base.years.seal_test_outcomes is True
+    # Opened only after docs/decisions/T-01-2025-protocol-freeze.md (T-02).
+    freeze = Path(__file__).resolve().parents[2] / "docs/decisions/T-01-2025-protocol-freeze.md"
+    assert freeze.is_file()
+    assert base.years.seal_test_outcomes is False
     assert "loan_amount" in base.features.allowlist
+    assert "combined_loan_to_value_ratio" in base.features.allowlist
     assert "action_taken" in base.features.forbidden
 
     privacy = load_privacy_config(default_config_dir() / "privacy.yaml")

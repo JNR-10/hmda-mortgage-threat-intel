@@ -4,7 +4,7 @@
 PYTHON ?= .venv/bin/python
 PIP ?= .venv/bin/pip
 
-.PHONY: setup lint test data-check smoke baseline privacy fairness fairness-hmda xai robustness residual-update all profile handoff-sync
+.PHONY: setup lint test data-check smoke baseline privacy fairness fairness-hmda xai xai-hmda robustness robustness-hmda residual-update all profile handoff-sync hmda-closeout
 
 setup:
 	python3.11 -m venv .venv
@@ -52,11 +52,21 @@ fairness-hmda:
 xai:
 	$(PYTHON) -m mortgage_threat_intel.cli xai --config configs/base.yaml --synthetic
 
+xai-hmda:
+	$(PYTHON) -m mortgage_threat_intel.cli xai --config configs/base.yaml --no-synthetic
+
 robustness:
 	$(PYTHON) -m mortgage_threat_intel.cli robustness --config configs/base.yaml --fairness-config configs/fairness.yaml --synthetic
+
+robustness-hmda:
+	$(PYTHON) -m mortgage_threat_intel.cli robustness --config configs/base.yaml --fairness-config configs/fairness.yaml --no-synthetic --open-2025
 
 residual-update:
 	$(PYTHON) -m mortgage_threat_intel.cli residual-update --register reports/threat_register.yaml --output reports/threat_register_residual.yaml
 
 all: smoke fairness xai robustness residual-update
-	@echo "Synthetic Krati+Jainil smoke sequence complete (no HMDA / 2025 sealed)."
+	@echo "Synthetic Krati+Jainil smoke sequence complete (no HMDA required)."
+
+# Full real-HMDA closeout path (local LAR + protocol freeze required).
+hmda-closeout: baseline privacy fairness-hmda xai-hmda robustness-hmda handoff-sync residual-update
+	@echo "Real HMDA aggregates synced to reports/handoff/; residual register updated."

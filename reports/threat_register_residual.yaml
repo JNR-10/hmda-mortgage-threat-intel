@@ -133,9 +133,9 @@ risks:
       '
   residual:
     likelihood: 3
-    impact: 4
-    product: 12
-    rationale: Controlled 10% missingness stress produced AUROC delta=-0.0767 vs clean
+    impact: 3
+    product: 9
+    rationale: Controlled 10% missingness stress produced AUROC delta=-0.0322 vs clean
       validation under fitted imputation. This is a controlled failure test, not a
       demonstrated live evasion attack.
   evidence_confidence: medium
@@ -251,7 +251,7 @@ risks:
     likelihood: 4
     impact: 4
     product: 16
-    rationale: Unmitigated HGB audit showed max primary disparity≈0.3333 (DP/EO differences).
+    rationale: Unmitigated HGB audit showed max primary disparity≈1.0000 (DP/EO differences).
       Interprets association with historical HMDA labels only — not discrimination,
       causation, or legal non-compliance.
   evidence_confidence: medium
@@ -304,13 +304,13 @@ risks:
 
       '
   residual:
-    likelihood: 4
+    likelihood: 3
     impact: 3
-    product: 12
-    rationale: 2025 outcomes remain sealed or were not opened; temporal residual not
-      updated from real holdout. Synthetic path does not change this score.
-  evidence_confidence: low
-  evidence_status: deferred
+    product: 9
+    rationale: 2025 temporal evaluation completed under frozen protocol. Treat metric
+      shifts as reliability/drift unless malicious causation is evidenced.
+  evidence_confidence: medium
+  evidence_status: measured
   test_or_signal: 'Frozen HGB on 2025 after joint protocol freeze; utility/fairness
     deltas plus one feature-distribution drift statistic (K-05).
 
@@ -410,7 +410,7 @@ residual_update:
   - risk_id: R4_unequal_error_rates
     action: residual_updated
   - risk_id: R5_temporal_drift
-    action: kept_deferred
+    action: residual_updated
   - risk_id: R6_explanation_quality
     action: residual_updated
   evidence_paths:

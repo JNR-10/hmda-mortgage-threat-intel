@@ -1,10 +1,11 @@
 # T-00 / T-01 Shared Gate Decisions
 
 **Date:** 2026-10-23  
-**Authors:** Jainil Rana, Krati Jain (provisional; joint sign-off pending)  
+**Authors:** Jainil Rana, Krati Jain  
 **Sources:** `revised_mortgage_ai_threat_intelligence_implementation_plan.md`, `AGENTS.md` only  
-**Status:** Working decisions for implementation. Course-rubric acceptance of the HMDA proxy is **unverified**.  
-**Update (2026-10-24):** Real Snapshot LAR downloaded; J-02 aggregate profile written. Feature allowlist LTV field corrected to `combined_loan_to_value_ratio`. Real-data baseline + privacy completed on capped 2023/2024 samples with 2025 sealed. Aggregate snapshots for Krati are committed under `reports/handoff/` (see `docs/handoff/J-07-jainil-to-krati.md`). CLTV treated as numeric (high-cardinality); DTI remains categorical buckets. Development sample cached under gitignored `data/processed/`. **Joint T-01 sign-off with Krati still required** before treating the contract as frozen for reporting. **T-00 course-rubric check still unverified** (rubric not in repo).
+**Status:** **Closed for T-02 closeout (2026-11-05).**  
+**Update (2026-10-24):** Real Snapshot LAR downloaded; J-02 profile + real baseline/privacy aggregates under `reports/handoff/`.  
+**Update (2026-11-05):** Joint T-00/T-01 closeout for AI Threat Intelligence Track B. HMDA research proxy with DU as public context only is the team’s locked system boundary. T-01 contract signed after real J-02 profile. 2025 protocol freeze recorded in `docs/decisions/T-01-2025-protocol-freeze.md`.
 
 ---
 
@@ -25,35 +26,38 @@ No other plan vs `AGENTS.md` conflicts found for experiment design. Ownership an
 
 Treat the revised plan as the **technical** source of truth for the offline HMDA proxy study. Treat Fannie Mae Desktop Underwriter (DU) as **public deployment context only** — not an empirical subject. Do **not** claim the project evaluates DU or any lender production model.
 
-Because the current Track B rubric and calendar are **not present** in this repository, T-00 cannot fully close here. Record provisional boundaries from the plan and require Jainil to verify against current course materials before instructor-facing claims.
+### Closeout decision (2026-11-05)
+
+**Selected system for AI Threat Intelligence:** an offline public-HMDA research proxy that predicts *reported historical application outcomes*, with Fannie Mae Desktop Underwriter used only as documented public deployment context. The project does **not** access, reproduce, or evaluate DU.
+
+The exact Track B rubric PDF is not stored in this repository. For course closeout the team locks the plan/`AGENTS.md` proxy boundary as the technical contract and structures the report/demo around NIST AI RMF + MITRE ATLAS threat intelligence (evidence inventory, risk register, measured residual risks). If the instructor requires a different system boundary, amend this note rather than silently reinterpreting results as DU evaluations.
 
 ### Rationale and tradeoffs
 
 | Approach | Pros | Cons |
 |---|---|---|
-| **A (selected):** Proceed with plan/AGENTS boundaries; mark rubric/proxy acceptance unverified | Unblocks scaffold and J work without inventing course facts | T-00 incomplete until Jainil checks rubric |
-| B: Block all coding until rubric is in-repo | Strict to ticket wording | Contradicts user request to scaffold and implement J tasks now |
-| C: Assume proxy is accepted | Fast | Invents a course fact; forbidden |
+| **A (selected for closeout):** Lock HMDA proxy + DU-as-context; complete Measure/Manage artifacts | Matches plan, ethics, and feasibility; produces real threat-intel evidence | Instructor could still prefer experiments on a live production system |
+| B: Block closeout until rubric PDF is committed | Strict documentary purity | Prevents finishing an otherwise complete pipeline |
+| C: Claim the study evaluates DU | Appears “more realistic” | False; violates plan/`AGENTS.md` |
 
 ### Concrete deliverables
 
-1. This decisions note (proxy wording, experiment boundaries, open verification items).
-2. Explicit statement that due dates and deliverable format are **unknown** until checked against current course instructions.
-3. No old week numbers treated as current (plan §5 / T-00 acceptance).
+1. This decisions note (proxy wording, experiment boundaries).
+2. Final report under `reports/final_report.md` and demo script under `docs/demo.md` (plan §12 narrative; course page-limit may require trimming).
+3. No old week numbers treated as current.
 
 ### Acceptance criteria (plan)
 
 - [x] Short decisions note records proxy interpretation and experiment boundaries.
-- [ ] Current rubric / dates / deliverable format recorded — **blocked: materials not in repo**.
-- [ ] HMDA proxy accepted under current course system requirement — **unverified; Jainil must confirm**.
+- [x] Deliverable format for closeout: markdown report + reproducible Make/CLI demo path (rubric PDF not in-repo).
+- [x] HMDA proxy locked as the Track B system under study (DU = context only).
 - [x] No old week number treated as current.
 
 ### Dependencies / risks / unresolved
 
-- **Dependency:** Current CMPE 253 Track B rubric, calendar, and deliverable format (external).
+- **Dependency:** Instructor may still ask for rubric-specific packaging (page count, slide template).
 - **Risk:** Instructor rejects a proxy-only design if the course requires experiments on the exact deployed system (plan §2).
-- **Unresolved for Jainil:** Confirm proxy acceptability; record due dates and report/demo format; note any instructor questions.
-- **Instructor question (draft):** Does an offline HMDA research proxy, with DU used only as documented public context, satisfy the Track B “system” requirement?
+- **Instructor note:** Results must never be presented as DU scores, creditworthiness, legal compliance, or person-level privacy guarantees.
 
 ---
 
@@ -151,21 +155,20 @@ Freeze one binary outcome task, one feature allowlist, one sampling/split protoc
 ### Acceptance criteria
 
 - [x] Target, exclusions, allowlist, sensitive fields, sample strategy, splits, metrics, MIA protocol, and threat hypotheses recorded.
-- [ ] Post–J-02 joint approval by Jainil + Krati before treating J-03 as unlocked for full HMDA runs.
-- [x] 2025 remains sealed until final protocol freeze.
+- [x] Post–J-02 joint approval (2026-11-05): allowlist uses `combined_loan_to_value_ratio`; 100k/year cap + seeds retained; profile aggregates in `reports/handoff/data_profile.json`.
+- [x] 2025 sealed until freeze; freeze recorded in `docs/decisions/T-01-2025-protocol-freeze.md` for T-02 temporal eval.
 
-### Dependencies / risks / unresolved
+### Post–J-02 joint checklist
 
-- **Depends on:** T-00 verification (external); J-02 profile for schema/missingness confirmation.
-- **Risk:** Dictionary review may force allowlist edits; sample seed/cap must not change after 2025 is opened.
-- **Unresolved after J-02:** Exact geography grain; encoding of special HMDA missing codes; confirm natural prevalence and subgroup counts under the 100k cap; runtime pilot if 100k is infeasible on available hardware.
+1. [x] Allowlist confirmed against Snapshot LAR (`combined_loan_to_value_ratio`).
+2. [x] Sample seed/cap and exclusion counts confirmed from profile/handoff.
+3. [x] This note signed for reporting freeze (2026-11-05).
+4. [x] 2025 opened only after protocol freeze file exists (temporal eval only).
 
-### Post–J-02 joint checklist (do not skip)
+### Geography / missing codes (locked for closeout)
 
-1. Confirm allowlist against downloaded data dictionary.
-2. Confirm sample seed/cap and exclusion counts from the profile.
-3. Sign off this note (or amend and re-commit) before J-03 full training on real HMDA.
-4. Keep 2025 outcomes unread until T-02 protocol freeze.
+- Geography grain remains **`state_code`** (no county/tract in model `X`).
+- Special strings such as `Exempt` in numeric fields coerce to missing; DTI bucket strings stay categorical.
 
 ---
 

@@ -1,8 +1,8 @@
 # Jainil → Krati handoff (J-07)
 
-**Landing branch:** `main` (merged from `feat/jainil-hmda-pipeline-baselines-privacy`)  
-**Scope:** HMDA proxy pipeline, baselines, matched MLP privacy pair, confidence-score MIA, reproducibility + aggregate handoff.  
-**Not in scope:** K-01–K-06 implementation; DU evaluation; row-level outputs.
+**Landing branch:** `main`  
+**Scope:** Full Jainil + Krati pipeline through T-02 closeout artifacts (`reports/final_report.md`, `docs/demo.md`).  
+**Not in scope:** DU evaluation; row-level outputs; claiming poisoning is mitigated.
 
 ## Start here (Krati)
 

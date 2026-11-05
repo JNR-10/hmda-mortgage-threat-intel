@@ -1,17 +1,21 @@
 # Committed aggregate handoff artifacts
 
-These JSON files are **aggregate-only** snapshots from Jainil’s real-HMDA runs (2025 sealed). Safe to commit; no loan-level rows, membership labels, or row-level predictions.
+Aggregate-only snapshots from real-HMDA runs (safe to commit). No loan-level rows, membership labels, or row-level explanations.
 
 | File | Source (local, gitignored) |
 |---|---|
 | `baseline_latest_metrics.json` | `outputs/baselines/latest_metrics.json` |
 | `privacy_latest_privacy.json` | `outputs/privacy/latest_privacy.json` |
 | `data_profile.json` | `outputs/data_profile.json` |
+| `fairness_latest.json` | `outputs/fairness/latest_fairness.json` |
+| `xai_latest.json` | `outputs/xai/latest_xai.json` |
+| `robustness_latest.json` | `outputs/robustness/latest_robustness.json` |
 
-Refresh after new runs:
+Refresh after new **real** runs (`manifest.synthetic=false`):
 
 ```bash
 make handoff-sync
+make residual-update
 ```
 
-For Krati’s next steps, see `docs/handoff/J-07-jainil-to-krati.md`.
+See `docs/handoff/J-07-jainil-to-krati.md` and `reports/final_report.md`.

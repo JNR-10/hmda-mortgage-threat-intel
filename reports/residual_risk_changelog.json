@@ -19,7 +19,7 @@
       "risk_id": "R4_unequal_error_rates"
     },
     {
-      "action": "kept_deferred",
+      "action": "residual_updated",
       "risk_id": "R5_temporal_drift"
     },
     {
@@ -27,5 +27,5 @@
       "risk_id": "R6_explanation_quality"
     }
   ],
-  "register_out": "reports\\threat_register_residual.yaml"
+  "register_out": "reports/threat_register_residual.yaml"
 }

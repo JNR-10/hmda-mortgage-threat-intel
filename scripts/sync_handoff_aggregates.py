@@ -16,6 +16,18 @@ COPIES = {
     "baseline_latest_metrics.json": ROOT / "outputs" / "baselines" / "latest_metrics.json",
     "privacy_latest_privacy.json": ROOT / "outputs" / "privacy" / "latest_privacy.json",
     "data_profile.json": ROOT / "outputs" / "data_profile.json",
+    "fairness_latest.json": ROOT / "outputs" / "fairness" / "latest_fairness.json",
+    "xai_latest.json": ROOT / "outputs" / "xai" / "latest_xai.json",
+    "robustness_latest.json": ROOT / "outputs" / "robustness" / "latest_robustness.json",
+}
+
+# data_profile has no synthetic flag; all others must be real-HMDA runs.
+REQUIRE_NON_SYNTHETIC = {
+    "baseline_latest_metrics.json",
+    "privacy_latest_privacy.json",
+    "fairness_latest.json",
+    "xai_latest.json",
+    "robustness_latest.json",
 }
 
 
@@ -43,16 +55,19 @@ def main() -> int:
         print("Missing local aggregate outputs:", file=sys.stderr)
         for m in missing:
             print(f"  {m}", file=sys.stderr)
-        print("Run make profile / make baseline / make privacy first.", file=sys.stderr)
+        print(
+            "Run profile / baseline / privacy / fairness / xai / robustness first.",
+            file=sys.stderr,
+        )
         return 1
     for name, src in COPIES.items():
         payload = json.loads(src.read_text(encoding="utf-8"))
-        if name != "data_profile.json":
+        if name in REQUIRE_NON_SYNTHETIC:
             synthetic = bool((payload.get("manifest") or {}).get("synthetic", False))
             if synthetic:
                 print(
                     f"Refusing to sync {src}: manifest.synthetic=true. "
-                    "Run real HMDA baseline/privacy (--no-synthetic) first.",
+                    "Run real HMDA commands (--no-synthetic) first.",
                     file=sys.stderr,
                 )
                 return 1
